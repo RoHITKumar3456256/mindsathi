@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1a0a2e" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#0d0617" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="brainLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00C9B1"/>
+      <stop offset="100%" stop-color="#007A70"/>
+    </linearGradient>
+    <linearGradient id="brainRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF8C42"/>
+      <stop offset="100%" stop-color="#E05A00"/>
+    </linearGradient>
+    <linearGradient id="handGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00C9B1"/>
+      <stop offset="100%" stop-color="#6B21A8"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer glow ring -->
+  <circle cx="100" cy="95" r="72" fill="none" stroke="#00C9B1" stroke-width="0.5" opacity="0.3"/>
+  <circle cx="100" cy="95" r="80" fill="none" stroke="#FF8C42" stroke-width="0.3" opacity="0.15"/>
+
+  <!-- Floating particles -->
+  <circle cx="38" cy="45" r="2.5" fill="#00C9B1" opacity="0.7" filter="url(#glow)"/>
+  <circle cx="162" cy="55" r="2" fill="#FF8C42" opacity="0.7" filter="url(#glow)"/>
+  <circle cx="30" cy="110" r="1.5" fill="#C084FC" opacity="0.6"/>
+  <circle cx="170" cy="100" r="2" fill="#00C9B1" opacity="0.5"/>
+  <circle cx="55" cy="30" r="1.5" fill="#FF8C42" opacity="0.5"/>
+  <circle cx="148" cy="35" r="1.5" fill="#C084FC" opacity="0.6"/>
+  <circle cx="175" cy="140" r="1.5" fill="#00C9B1" opacity="0.4"/>
+  <circle cx="22" cy="80" r="1.5" fill="#FF8C42" opacity="0.4"/>
+
+  <!-- Hand shape (teal-to-purple gradient) -->
+  <path d="M60 135 Q50 155 65 168 Q80 178 115 172 Q145 168 158 155 Q168 142 160 132 L140 118 Q138 130 130 133 L120 110 Q118 100 108 100 Q98 100 98 110 L98 118 Q90 118 88 108 L80 75 Q78 62 68 63 Q58 64 60 78 Z"
+        fill="url(#handGrad)" opacity="0.95" filter="url(#glow)"/>
+
+  <!-- Left brain hemisphere (teal) -->
+  <path d="M100 42 Q82 35 72 45 Q60 55 62 70 Q58 80 64 90 Q60 100 66 108 Q72 116 82 116 L100 116 Z"
+        fill="url(#brainLeft)" filter="url(#glow)"/>
+
+  <!-- Right brain hemisphere (orange) -->
+  <path d="M100 42 Q118 35 128 45 Q140 55 138 70 Q142 80 136 90 Q140 100 134 108 Q128 116 118 116 L100 116 Z"
+        fill="url(#brainRight)" filter="url(#glow)"/>
+
+  <!-- Brain center divide -->
+  <line x1="100" y1="42" x2="100" y2="116" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+
+  <!-- Brain folds (left) -->
+  <path d="M72 65 Q80 58 88 65" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M66 82 Q76 75 84 80" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M68 97 Q78 92 86 96" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Brain folds (right) -->
+  <path d="M128 65 Q120 58 112 65" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M134 82 Q124 75 116 80" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M132 97 Q122 92 114 96" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Neural circuit nodes on left brain -->
+  <circle cx="78" cy="72" r="3" fill="#FFFFFF" opacity="0.9" filter="url(#glow)"/>
+  <circle cx="70" cy="88" r="2.5" fill="#FFFFFF" opacity="0.9" filter="url(#glow)"/>
+  <circle cx="82" cy="100" r="2" fill="#FFFFFF" opacity="0.8" filter="url(#glow)"/>
+  <line x1="78" y1="72" x2="70" y2="88" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/>
+  <line x1="70" y1="88" x2="82" y2="100" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/>
+  <line x1="78" y1="72" x2="82" y2="100" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+
+  <!-- Glow halo behind brain -->
+  <ellipse cx="100" cy="79" rx="42" ry="40" fill="none" stroke="#00C9B1" stroke-width="0.8" opacity="0.2" filter="url(#softGlow)"/>
+</svg>

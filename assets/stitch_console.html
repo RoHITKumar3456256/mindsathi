@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MindSaathi | Multi-Agent Neuro-Cognitive Clinical Architecture</title>
+<!-- Material Symbols & Typography -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed": "#002113",
+            "surface": "#101417",
+            "on-primary-fixed-variant": "#005144",
+            "tertiary-fixed": "#b3ebff",
+            "agent-clinical": "#6366F1",
+            "secondary": "#4edea3",
+            "on-error": "#690005",
+            "on-primary": "#00382f",
+            "status-calm": "#10B981",
+            "on-error-container": "#ffdad6",
+            "outline-variant": "#3a4a46",
+            "border-active": "rgba(0, 245, 212, 0.60)",
+            "border-subtle": "rgba(0, 245, 212, 0.15)",
+            "error-container": "#93000a",
+            "on-surface": "#e0e3e7",
+            "surface-glass": "rgba(24, 34, 50, 0.65)",
+            "surface-container-highest": "#313539",
+            "surface-container-high": "#262a2e",
+            "surface-elevated": "#111822",
+            "surface-card": "#182232",
+            "status-alert": "#F59E0B",
+            "surface-tint": "#00dfc1",
+            "on-secondary": "#003824",
+            "on-secondary-container": "#00311f",
+            "glow-cyan": "rgba(0, 245, 212, 0.35)",
+            "on-background": "#e0e3e7",
+            "on-secondary-fixed-variant": "#005236",
+            "on-tertiary-fixed-variant": "#004e5f",
+            "surface-variant": "#313539",
+            "glow-emerald": "rgba(16, 185, 129, 0.25)",
+            "background": "#101417",
+            "on-surface-variant": "#b9cac4",
+            "primary": "#d7fff3",
+            "error": "#ffb4ab",
+            "tertiary-container": "#97e5ff",
+            "agent-triage": "#F43F5E",
+            "secondary-fixed": "#6ffbbe",
+            "on-tertiary": "#003642",
+            "inverse-primary": "#006b5b",
+            "status-distress": "#EF4444",
+            "tertiary-fixed-dim": "#4cd6fb",
+            "surface-container": "#1c2023",
+            "secondary-container": "#00a572",
+            "on-tertiary-container": "#00687e",
+            "primary-fixed": "#26fedc",
+            "agent-mind": "#00F5D4",
+            "tertiary": "#eaf9ff",
+            "on-primary-container": "#006c5c",
+            "primary-fixed-dim": "#00dfc1",
+            "on-tertiary-fixed": "#001f27",
+            "surface-base": "#0B0F12",
+            "on-primary-fixed": "#00201a",
+            "surface-container-lowest": "#0b0f12",
+            "surface-container-low": "#181c1f",
+            "inverse-on-surface": "#2d3134",
+            "surface-bright": "#363a3d",
+            "outline": "#83948f",
+            "inverse-surface": "#e0e3e7",
+            "secondary-fixed-dim": "#4edea3",
+            "surface-dim": "#101417",
+            "primary-container": "#00f5d4"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "margin": "2rem",
+            "space-xl": "2.5rem",
+            "space-lg": "1.5rem",
+            "margin-mobile": "1rem",
+            "gutter": "1.25rem",
+            "space-md": "1rem",
+            "gutter-mobile": "0.75rem"
+          },
+          "fontFamily": {
+            "label-caps": ["JetBrains Mono"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display": ["Plus Jakarta Sans"],
+            "body-md": ["Inter"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "telemetry-sm": ["JetBrains Mono"],
+            "telemetry-lg": ["JetBrains Mono"],
+            "display-mobile": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Inter"],
+            "body-sm": ["Inter"]
+          },
+          "fontSize": {
+            "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "600" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "display": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "telemetry-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+            "telemetry-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "display-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(11, 15, 18, 0.6);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(0, 245, 212, 0.2);
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 245, 212, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-surface-base text-on-surface antialiased flex h-screen overflow-hidden selection:bg-agent-mind selection:text-surface-base">
+<!-- ==================== LEFT NAVIGATION & TELEMETRY SIDEBAR ==================== -->
+<aside class="docked left top-0 h-screen w-72 flex flex-col justify-between flex-shrink-0 border-r border-border-subtle bg-surface-elevated/80 backdrop-blur-xl shadow-[0_0_24px_rgba(0,245,212,0.05)] z-30 overflow-hidden">
+<!-- Top Brand & Header Node -->
+<div class="p-4 border-b border-border-subtle">
+<div class="flex items-center gap-3">
+<div class="relative w-10 h-10 rounded-lg overflow-hidden border border-border-active/60 bg-surface-base p-1 flex items-center justify-center shadow-[0_0_12px_rgba(0,245,212,0.2)]">
+<img alt="MindSaathi Neural Core Indicator" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VHrHd851QVkdlyFkupuWYVsb0ja-T-5lMOvc_R1BSzNKmf_tQMu7jhhAZoTCPtiQ5WSb_YlVeGgWtwzr3XtT_lIzqF9lqX0_zAw5eUAtwQo6WdSu6b8Uk9q0EVVhGNWzIRTGnzLfuqIHuQjxEuwUJIFrKGYodg38-pyUtPPHqz9hKJeyeoZoc-Jb5D90nKUvq98_RM25cp1p4Ur7MH16CeneADbOMB1CX2-4bGZY_MOPO33h3LJ2xdXNg"/>
+<span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-agent-mind animate-ping"></span>
+<span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-agent-mind"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-headline-md text-headline-md tracking-tight text-primary-container font-semibold">MindSaathi</span>
+<span class="font-label-caps text-label-caps text-agent-mind bg-agent-mind/10 px-1.5 py-0.5 rounded border border-agent-mind/30">v2.4.0 RC</span>
+</div>
+<p class="font-telemetry-sm text-telemetry-sm text-on-surface-variant truncate">Clinical AI Terminal</p>
+</div>
+</div>
+<!-- Action Button from Blueprint JSON -->
+<button class="w-full mt-4 flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-primary-container text-on-primary-container font-headline-sm text-headline-sm text-sm font-semibold shadow-[0_0_16px_rgba(0,245,212,0.35)] hover:shadow-[0_0_20px_rgba(0,245,212,0.6)] active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>New Safe Session</span>
+</button>
+</div>
+<!-- Scrollable Telemetry Docks -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-5">
+<!-- Primary Nav Tabs from Shared Components JSON -->
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant/80 uppercase mb-2 block tracking-wider">Clinical Modules</span>
+<nav class="space-y-1">
+<!-- Therapy Console (Active Navigation Target) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-card text-agent-mind border border-border-active/40 font-telemetry-sm text-telemetry-sm shadow-[inset_0_0_12px_rgba(0,245,212,0.08)]" href="#">
+<span class="material-symbols-outlined text-[20px]" data-weight="fill">chat_bubble</span>
+<span class="font-medium">Therapy Console</span>
+<span class="ml-auto w-1.5 h-1.5 rounded-full bg-agent-mind"></span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 transition-all font-telemetry-sm text-telemetry-sm hover:border-border-active/30" href="#">
+<span class="material-symbols-outlined text-[20px]">monitoring</span>
+<span>PSS-4 Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 transition-all font-telemetry-sm text-telemetry-sm hover:border-border-active/30" href="#">
+<span class="material-symbols-outlined text-[20px]">schema</span>
+<span>Care Roadmaps</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 transition-all font-telemetry-sm text-telemetry-sm hover:border-border-active/30" href="#">
+<span class="material-symbols-outlined text-[20px]">history_edu</span>
+<span>Session Transcripts</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 transition-all font-telemetry-sm text-telemetry-sm hover:border-border-active/30" href="#">
+<span class="material-symbols-outlined text-[20px]">emergency</span>
+<span>Crisis Matrix</span>
+</a>
+</nav>
+</div>
+<!-- 5-Tier Neural Routing Nervous System Status Widget -->
+<div class="p-3 rounded-lg bg-surface-base/90 border border-border-subtle relative overflow-hidden">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-agent-mind text-[16px]">hub</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase">5-Tier Routing Core</span>
+</div>
+<span class="flex h-2 w-2 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-calm opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-status-calm"></span>
+</span>
+</div>
+<div class="space-y-1.5 text-[11px] font-telemetry-sm">
+<div class="flex items-center justify-between text-agent-mind bg-agent-mind/5 px-2 py-1 rounded border border-agent-mind/20">
+<span class="truncate">T1: Ling 3.0 Sante (124B)</span>
+<span class="text-[9px] uppercase px-1 rounded bg-agent-mind/20">Active</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant px-2 py-0.5">
+<span class="truncate">T2: Gemini 2.5 Flash</span>
+<span class="text-[9px] text-on-surface-variant/60">Standby</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant px-2 py-0.5">
+<span class="truncate">T3: Groq LPU Whisper</span>
+<span class="text-[9px] text-status-calm">&lt;240ms</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant px-2 py-0.5">
+<span class="truncate">T4: Inkling MoE (975B)</span>
+<span class="text-[9px] text-on-surface-variant/60">Ready</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant px-2 py-0.5">
+<span class="truncate">T5: CBT Fallback Core</span>
+<span class="text-[9px] text-on-surface-variant/60">Local</span>
+</div>
+</div>
+</div>
+<!-- PSS-4 Longitudinal Stress Trend Mini Sparkline -->
+<div class="p-3 rounded-lg bg-surface-base/90 border border-border-subtle">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-label-caps text-label-caps text-on-surface-variant">PSS-4 Stress Delta</span>
+<span class="font-telemetry-sm text-telemetry-sm text-status-calm flex items-center">
+<span class="material-symbols-outlined text-[14px]">trending_down</span> -57%
+          </span>
+</div>
+<div class="flex items-end justify-between h-10 px-1 pt-2 gap-1 border-b border-border-subtle pb-1">
+<!-- Sparkline bars: 14 -> 11 -> 8 -> 6 -->
+<div class="w-1/4 flex flex-col items-center gap-1">
+<span class="font-telemetry-sm text-[9px] text-on-surface-variant">14</span>
+<div class="w-full bg-status-distress/80 rounded-t h-8"></div>
+<span class="font-label-caps text-[8px] text-on-surface-variant/60">W1</span>
+</div>
+<div class="w-1/4 flex flex-col items-center gap-1">
+<span class="font-telemetry-sm text-[9px] text-status-alert">11</span>
+<div class="w-full bg-status-alert/80 rounded-t h-6 shadow-[0_0_8px_rgba(245,158,11,0.3)]"></div>
+<span class="font-label-caps text-[8px] text-on-surface-variant/60">W2</span>
+</div>
+<div class="w-1/4 flex flex-col items-center gap-1">
+<span class="font-telemetry-sm text-[9px] text-on-surface-variant">8</span>
+<div class="w-full bg-secondary/80 rounded-t h-4"></div>
+<span class="font-label-caps text-[8px] text-on-surface-variant/60">W3</span>
+</div>
+<div class="w-1/4 flex flex-col items-center gap-1">
+<span class="font-telemetry-sm text-[9px] text-status-calm">6</span>
+<div class="w-full bg-status-calm rounded-t h-3 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
+<span class="font-label-caps text-[8px] text-on-surface-variant/60">W4</span>
+</div>
+</div>
+<p class="font-telemetry-sm text-[10px] text-on-surface-variant mt-2 flex items-center justify-between">
+<span>Status: <strong class="text-secondary font-medium">Moderate Coping</strong></span>
+<span>(Cohen d = 0.84)</span>
+</p>
+</div>
+<!-- Recent Student Sessions List -->
+<div class="space-y-1.5">
+<span class="font-label-caps text-label-caps text-on-surface-variant/80 uppercase tracking-wider block">Episodic Memory Buffer</span>
+<div class="space-y-1 text-on-surface-variant font-telemetry-sm text-[11px]">
+<div class="p-2 rounded bg-surface-card/60 border border-border-subtle flex items-center gap-2 hover:border-agent-mind/40 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[14px] text-agent-mind">record_voice_over</span>
+<span class="truncate">Exam Anxiety Pre-Midterms</span>
+</div>
+<div class="p-2 rounded bg-surface-card/30 border border-transparent flex items-center gap-2 hover:bg-surface-card/60 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant/60">self_improvement</span>
+<span class="truncate">5-4-3-2-1 Sensory Grounding</span>
+</div>
+<div class="p-2 rounded bg-surface-card/30 border border-transparent flex items-center gap-2 hover:bg-surface-card/60 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant/60">work_alert</span>
+<span class="truncate">Placement Imposter Syndrome</span>
+</div>
+<div class="p-2 rounded bg-surface-card/30 border border-transparent flex items-center gap-2 hover:bg-surface-card/60 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant/60">bedtime</span>
+<span class="truncate">Late-night Overthinking</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Crisis Fail-Safe Card & Navigation Footer -->
+<div class="p-3 border-t border-border-subtle bg-surface-base/95 space-y-2.5">
+<!-- Fail-Safe Crisis Card with 100% Sensitivity Gate -->
+<div class="p-2.5 rounded-lg bg-error-container/30 border border-agent-triage/40 shadow-[0_0_15px_rgba(244,63,94,0.15)]">
+<div class="flex items-center gap-2 text-agent-triage mb-1">
+<span class="material-symbols-outlined text-[16px] animate-pulse">crisis_alert</span>
+<span class="font-label-caps text-label-caps text-agent-triage font-bold">FAIL-SAFE CRISIS GATE</span>
+<span class="ml-auto font-telemetry-sm text-[9px] bg-agent-triage/20 px-1 rounded text-agent-triage">100% Sens.</span>
+</div>
+<p class="font-telemetry-sm text-[10px] text-on-surface-variant mb-2">Tele-MANAS (Govt): <strong class="text-on-surface">14416</strong> | iCall: <strong class="text-on-surface">9152987821</strong></p>
+<button class="w-full py-1.5 px-2 rounded bg-status-distress text-surface-base font-telemetry-sm text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-[0_0_12px_rgba(239,68,68,0.4)] hover:bg-status-distress/90 transition-all">
+<span class="material-symbols-outlined text-[14px]">phone_in_talk</span>
+<span>Emergency Support Dial</span>
+</button>
+</div>
+<!-- Footer Tab Links from JSON -->
+<div class="pt-1 flex items-center justify-between text-on-surface-variant font-telemetry-sm text-[11px]">
+<button class="flex items-center gap-1.5 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[15px]">tune</span>
+<span>Telemetry Audit</span>
+</button>
+<button class="flex items-center gap-1.5 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[15px]">settings</span>
+<span>Clinical Settings</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- ==================== MAIN WORKSPACE CANVASES ==================== -->
+<div class="flex-1 flex flex-col h-screen overflow-hidden bg-background">
+<!-- ==================== TOP TELEMETRY & STATUS BAR ==================== -->
+<header class="h-14 flex justify-between items-center w-full px-6 py-2 border-b border-border-subtle bg-surface-base/80 backdrop-blur-md z-20 flex-shrink-0">
+<!-- Session and Patient Token Identification -->
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-agent-mind shadow-[0_0_8px_#00F5D4]"></span>
+<span class="font-headline-sm text-headline-sm text-sm font-bold text-agent-mind tracking-wide">MindSaathi Telemetry Corridors</span>
+</div>
+<span class="text-border-subtle">|</span>
+<div class="flex items-center gap-2 font-telemetry-sm text-telemetry-sm text-on-surface-variant bg-surface-card px-2.5 py-1 rounded border border-border-subtle">
+<span class="material-symbols-outlined text-[14px] text-agent-mind">fingerprint</span>
+<span class="text-on-surface">Session #MS-8492</span>
+<span class="text-on-surface-variant/60">• Anonymized Student Token</span>
+</div>
+</div>
+<!-- Real-time Affective & Acoustic Latency Telemetry Badges -->
+<div class="hidden lg:flex items-center gap-3">
+<!-- DistilRoBERTa Emotion Classifier Badge -->
+<div class="flex items-center gap-2 px-3 py-1 rounded-full bg-status-alert/10 border border-status-alert/30 font-telemetry-sm text-telemetry-sm">
+<span class="w-2 h-2 rounded-full bg-status-alert animate-ping"></span>
+<span class="text-status-alert font-medium">Affect: Anxious Overload (88%)</span>
+<span class="text-[10px] text-on-surface-variant/70">via DistilRoBERTa</span>
+</div>
+<!-- Latency Meter -->
+<div class="flex items-center gap-2 px-3 py-1 rounded-full bg-surface-card border border-border-subtle font-telemetry-sm text-[11px] text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-[14px]">speed</span>
+<span>Groq Whisper: <strong class="text-on-surface">240ms</strong></span>
+<span class="text-border-subtle">|</span>
+<span>Inference: <strong class="text-on-surface">1.8s</strong></span>
+</div>
+</div>
+<!-- Trailing Action Cluster -->
+<div class="flex items-center gap-2">
+<button class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-card text-on-surface hover:text-agent-mind hover:border-agent-mind/40 border border-border-subtle font-telemetry-sm text-telemetry-sm transition-all">
+<span class="material-symbols-outlined text-[16px]">assignment_turned_in</span>
+<span>Take PSS-4</span>
+</button>
+<button class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-card text-on-surface hover:text-secondary hover:border-secondary/40 border border-border-subtle font-telemetry-sm text-telemetry-sm transition-all">
+<span class="material-symbols-outlined text-[16px]">account_tree</span>
+<span>Care Roadmap</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-agent-triage/20 hover:bg-agent-triage text-agent-triage hover:text-surface-base border border-agent-triage/50 font-telemetry-sm text-telemetry-sm font-semibold transition-all shadow-[0_0_12px_rgba(244,63,94,0.3)]">
+<span class="material-symbols-outlined text-[16px] animate-pulse">sos</span>
+<span>Emergency SOS</span>
+</button>
+</div>
+</header>
+<!-- ==================== MAIN CHAT & PSYCHOMETRIC INTERACTION CONSOLE ==================== -->
+<main class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6 max-w-5xl mx-auto w-full">
+<!-- AI GREETING NODE -->
+<div class="flex items-start gap-3.5">
+<div class="w-9 h-9 rounded-lg border border-border-active bg-surface-base p-1 flex-shrink-0 flex items-center justify-center shadow-[0_0_16px_rgba(0,245,212,0.2)]">
+<img alt="MindSaathi" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VHrHd851QVkdlyFkupuWYVsb0ja-T-5lMOvc_R1BSzNKmf_tQMu7jhhAZoTCPtiQ5WSb_YlVeGgWtwzr3XtT_lIzqF9lqX0_zAw5eUAtwQo6WdSu6b8Uk9q0EVVhGNWzIRTGnzLfuqIHuQjxEuwUJIFrKGYodg38-pyUtPPHqz9hKJeyeoZoc-Jb5D90nKUvq98_RM25cp1p4Ur7MH16CeneADbOMB1CX2-4bGZY_MOPO33h3LJ2xdXNg"/>
+</div>
+<div class="flex-1 max-w-3xl space-y-1.5">
+<div class="flex items-center gap-2">
+<span class="font-telemetry-sm text-[11px] font-semibold text-agent-mind bg-agent-mind/10 px-2 py-0.5 rounded border border-agent-mind/20">
+              [AGENT: CLINICAL_TRIAGE // LING-SANTE 124B]
+            </span>
+<span class="font-telemetry-sm text-[10px] text-on-surface-variant">02:14:08 AM • Active Care Session</span>
+</div>
+<div class="p-4 rounded-xl rounded-tl-sm bg-surface-card border border-border-subtle backdrop-blur-md shadow-[0_4px_24px_rgba(0,0,0,0.3)] space-y-2">
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+              Namaste Rohan! Main hoon <strong class="text-agent-mind font-semibold">MindSaathi</strong>. Main samajh sakta hoon ki end-sem exams aur placement interviews ka pressure is waqt kitna overwhelming lag raha hai. You are not alone, aur hum is state ko bilkul step-by-step navigate karenge.
+            </p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Pehele hum aapke exact clinical cognitive load ko quantify karte hain using <strong class="text-primary-container">Cohen's PSS-4</strong>, taaki hum deterministic recovery interventions plan kar sakein.
+            </p>
+</div>
+</div>
+</div>
+<!-- USER INLINE UTTERANCE NODE -->
+<div class="flex items-start justify-end gap-3.5">
+<div class="max-w-2xl space-y-1 text-right">
+<span class="font-telemetry-sm text-[10px] text-on-surface-variant block">STUDENT #MS-8492</span>
+<div class="p-3.5 rounded-xl rounded-tr-sm bg-surface-card border border-border-active/40 text-left shadow-[0_0_16px_rgba(0,245,212,0.1)]">
+<p class="font-body-md text-body-md text-on-surface">
+              "Sir bohot anxiety ho rahi hai, kal mock coding test hai aur syllabus cover nahi hua. Dimaag blank ho raha hai baar-baar. Please PSS-4 scale se measure karke koi roadmap batao."
+            </p>
+</div>
+</div>
+<div class="w-9 h-9 rounded-lg bg-surface-elevated border border-border-subtle flex items-center justify-center text-agent-mind font-telemetry-sm text-telemetry-sm font-bold flex-shrink-0">
+          RH
+        </div>
+</div>
+<!-- ==================== COHEN'S PSS-4 PSYCHOMETRIC ASSESSMENT CARD ==================== -->
+<section class="p-5 rounded-2xl bg-surface-card/90 border border-border-active/70 backdrop-blur-xl shadow-[0_0_30px_rgba(0,245,212,0.12)] space-y-5">
+<!-- Header & Progress Protocol -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-border-subtle gap-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-agent-mind text-[20px]">psychology_alt</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Cohen's Perceived Stress Scale (PSS-4) - Real-time Diagnostic</h2>
+</div>
+<p class="font-telemetry-sm text-telemetry-sm text-on-surface-variant mt-0.5">Automated Psychometric Quantification • Validated Clinical Standard</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-caps text-label-caps text-agent-mind uppercase">Item 3 of 4</span>
+<div class="w-32 h-2 rounded-full bg-surface-base border border-border-subtle overflow-hidden">
+<div class="h-full bg-agent-mind rounded-full shadow-[0_0_8px_#00F5D4]" style="width: 75%;"></div>
+</div>
+</div>
+</div>
+<!-- Question Prompt Body -->
+<div class="space-y-3">
+<div class="flex items-start gap-2">
+<span class="font-telemetry-sm text-telemetry-sm text-agent-mind font-bold px-2 py-0.5 rounded bg-agent-mind/10 border border-agent-mind/20">Q3</span>
+<h3 class="font-body-lg text-body-lg text-on-surface font-medium leading-snug">
+              "In the last month, how often have you felt confident about your ability to handle your personal problems?" 
+              <span class="text-on-surface-variant text-sm block font-normal mt-1">(Reverse-scored mathematically: <code class="text-agent-mind font-telemetry-sm text-[12px] bg-surface-base px-1.5 py-0.5 rounded">Q̃₃ = 4 - Q₃</code>)</span>
+</h3>
+</div>
+<!-- 5 Likert Interactive Rating Pills -->
+<div class="grid grid-cols-1 sm:grid-cols-5 gap-2.5 pt-2">
+<button class="p-3 rounded-xl bg-surface-base/80 hover:bg-surface-elevated border border-border-subtle hover:border-agent-mind/50 text-left transition-all group active:scale-[0.98]">
+<div class="font-telemetry-sm text-telemetry-sm font-bold text-on-surface-variant group-hover:text-agent-mind">0 - Never</div>
+<div class="font-body-sm text-[12px] text-on-surface-variant/70 mt-0.5">Kabhi nahi</div>
+</button>
+<button class="p-3 rounded-xl bg-surface-base/80 hover:bg-surface-elevated border border-border-subtle hover:border-agent-mind/50 text-left transition-all group active:scale-[0.98]">
+<div class="font-telemetry-sm text-telemetry-sm font-bold text-on-surface-variant group-hover:text-agent-mind">1 - Almost Never</div>
+<div class="font-body-sm text-[12px] text-on-surface-variant/70 mt-0.5">Shayad hi kabhi</div>
+</button>
+<!-- Selected State -->
+<button class="p-3 rounded-xl bg-agent-mind/15 border-2 border-agent-mind text-left shadow-[0_0_16px_rgba(0,245,212,0.3)] transition-all">
+<div class="font-telemetry-sm text-telemetry-sm font-bold text-agent-mind flex items-center justify-between">
+<span>2 - Sometimes</span>
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+</div>
+<div class="font-body-sm text-[12px] text-on-surface mt-0.5">Kabhi-kabhi</div>
+</button>
+<button class="p-3 rounded-xl bg-surface-base/80 hover:bg-surface-elevated border border-border-subtle hover:border-agent-mind/50 text-left transition-all group active:scale-[0.98]">
+<div class="font-telemetry-sm text-telemetry-sm font-bold text-on-surface-variant group-hover:text-agent-mind">3 - Fairly Often</div>
+<div class="font-body-sm text-[12px] text-on-surface-variant/70 mt-0.5">Aksar / Badi baar</div>
+</button>
+<button class="p-3 rounded-xl bg-surface-base/80 hover:bg-surface-elevated border border-border-subtle hover:border-agent-mind/50 text-left transition-all group active:scale-[0.98]">
+<div class="font-telemetry-sm text-telemetry-sm font-bold text-on-surface-variant group-hover:text-agent-mind">4 - Very Often</div>
+<div class="font-body-sm text-[12px] text-on-surface-variant/70 mt-0.5">Baar-baar</div>
+</button>
+</div>
+</div>
+<!-- Real-Time Calculated Gauge Widget (Empirical Output) -->
+<div class="p-4 rounded-xl bg-surface-base/95 border border-status-alert/40 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-[0_0_20px_rgba(245,158,11,0.15)]">
+<div class="flex items-center gap-4">
+<!-- Circular Radial Micro-gauge -->
+<div class="relative w-16 h-16 flex items-center justify-center flex-shrink-0">
+<svg class="w-16 h-16 transform -rotate-90">
+<circle cx="32" cy="32" fill="transparent" r="26" stroke="rgba(255,255,255,0.1)" stroke-width="6"></circle>
+<circle class="drop-shadow-[0_0_6px_#F59E0B]" cx="32" cy="32" fill="transparent" r="26" stroke="#F59E0B" stroke-dasharray="163" stroke-dashoffset="50" stroke-linecap="round" stroke-width="6"></circle>
+</svg>
+<div class="absolute text-center">
+<span class="font-telemetry-lg text-telemetry-lg font-bold text-status-alert">11</span>
+<span class="font-telemetry-sm text-[9px] text-on-surface-variant block -mt-1">/ 16</span>
+</div>
+</div>
+<!-- Severity Text & Clinical CBT Guidance -->
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-base text-status-alert font-bold">Severity: High Stress (10 – 13)</span>
+<span class="font-label-caps text-[10px] bg-status-alert/20 text-status-alert px-1.5 py-0.5 rounded border border-status-alert/30">Executive Overload</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                Cognitive overload and task paralysis detected. System automatically triggered CBT cognitive restructuring and 5-Step Visual Recovery Pathway below.
+              </p>
+</div>
+</div>
+<div class="flex items-center gap-2 self-end md:self-auto">
+<button class="px-3.5 py-2 rounded-lg bg-surface-card hover:bg-surface-elevated text-on-surface border border-border-subtle hover:border-agent-mind font-telemetry-sm text-telemetry-sm transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">restart_alt</span>
+<span>Re-calculate PSS-4</span>
+</button>
+</div>
+</div>
+</section>
+<!-- ==================== MULTIMODAL CBT GUIDANCE & AUDIO VOICE BAR ==================== -->
+<div class="flex items-start gap-3.5">
+<div class="w-9 h-9 rounded-lg border border-border-active bg-surface-base p-1 flex-shrink-0 flex items-center justify-center shadow-[0_0_16px_rgba(0,245,212,0.2)]">
+<img alt="MindSaathi" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VHrHd851QVkdlyFkupuWYVsb0ja-T-5lMOvc_R1BSzNKmf_tQMu7jhhAZoTCPtiQ5WSb_YlVeGgWtwzr3XtT_lIzqF9lqX0_zAw5eUAtwQo6WdSu6b8Uk9q0EVVhGNWzIRTGnzLfuqIHuQjxEuwUJIFrKGYodg38-pyUtPPHqz9hKJeyeoZoc-Jb5D90nKUvq98_RM25cp1p4Ur7MH16CeneADbOMB1CX2-4bGZY_MOPO33h3LJ2xdXNg"/>
+</div>
+<div class="flex-1 max-w-3xl space-y-3">
+<div class="flex items-center justify-between">
+<span class="font-telemetry-sm text-[11px] font-semibold text-secondary bg-secondary/10 px-2 py-0.5 rounded border border-secondary/30">
+              [AGENT: CBT_SPECIALIST // RESTRUCTURING ENGINE]
+            </span>
+<span class="font-telemetry-sm text-[10px] text-on-surface-variant">Model Confidence: 94.2%</span>
+</div>
+<!-- CBT Guidance Card -->
+<div class="p-4 rounded-xl rounded-tl-sm bg-surface-card border border-border-subtle backdrop-blur-md space-y-3">
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+              Rohan, aapka <strong>PSS-4 score 11</strong> hai, jo indicate karta hai ki dimaag is waqt <em>"All-or-Nothing Catastrophizing"</em> mein phasa hai ("Agar kal ka test bigad gaya toh sab khatam"). Yeh ek cognitive distortion hai, reality nahi.
+            </p>
+<p class="font-body-sm text-body-sm text-on-surface leading-relaxed">
+              Kal poore 100% syllabus ki zaroorat nahi hai. Hum agle 3 hours ko micro-sprint mein tod rahe hain. Suniye aur is pathway ko follow kijiye:
+            </p>
+<!-- Audio Voice Readout Bar with Fluid Waveform Visualization -->
+<div class="p-3 rounded-lg bg-surface-base/90 border border-border-active/40 flex items-center gap-4">
+<button class="w-10 h-10 rounded-full bg-agent-mind text-surface-base flex items-center justify-center shadow-[0_0_16px_rgba(0,245,212,0.4)] hover:scale-105 active:scale-95 transition-all flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]" data-weight="fill">play_arrow</span>
+</button>
+<div class="flex-1 space-y-1">
+<div class="flex items-center justify-between font-telemetry-sm text-[11px]">
+<span class="text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-agent-mind">record_voice_over</span>
+                    Listen in Hinglish (TTS Acoustic Voice)
+                  </span>
+<span class="text-on-surface-variant font-mono">01:42 / 03:15</span>
+</div>
+<!-- 3D Fluid Waveform Simulation Bars -->
+<div class="h-6 flex items-center gap-1 overflow-hidden px-1">
+<div class="w-1 bg-agent-mind/40 h-2 rounded-full"></div>
+<div class="w-1 bg-agent-mind/60 h-3 rounded-full"></div>
+<div class="w-1 bg-agent-mind h-5 rounded-full animate-pulse"></div>
+<div class="w-1 bg-agent-mind h-6 rounded-full animate-pulse"></div>
+<div class="w-1 bg-agent-mind/80 h-4 rounded-full"></div>
+<div class="w-1 bg-agent-mind h-5 rounded-full animate-pulse"></div>
+<div class="w-1 bg-agent-mind/50 h-2 rounded-full"></div>
+<div class="w-1 bg-agent-mind h-6 rounded-full"></div>
+<div class="w-1 bg-agent-mind/90 h-4 rounded-full"></div>
+<div class="w-1 bg-agent-mind/40 h-2 rounded-full"></div>
+<div class="w-1 bg-agent-mind/70 h-3 rounded-full"></div>
+<div class="w-1 bg-agent-mind h-5 rounded-full"></div>
+<div class="w-1 bg-agent-mind h-6 rounded-full"></div>
+<div class="w-1 bg-agent-mind/80 h-3 rounded-full"></div>
+<div class="w-1 bg-agent-mind/30 h-2 rounded-full"></div>
+<div class="w-1 bg-agent-mind/50 h-4 rounded-full"></div>
+<div class="w-1 bg-agent-mind h-5 rounded-full"></div>
+<div class="w-1 bg-agent-mind/70 h-2 rounded-full"></div>
+<div class="w-1 bg-agent-mind/40 h-1 rounded-full"></div>
+</div>
+</div>
+<div class="hidden sm:flex flex-col text-right font-telemetry-sm text-[10px] text-on-surface-variant">
+<span>Speed: 1.0x</span>
+<span class="text-agent-mind">Sub-300ms</span>
+</div>
+</div>
+</div>
+<!-- ==================== EMBEDDED DYNAMIC VISUAL RECOVERY PATHWAY ==================== -->
+<div class="p-5 rounded-2xl bg-surface-card border border-border-active/50 shadow-[0_0_24px_rgba(0,245,212,0.08)] space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-border-subtle gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-agent-mind text-[20px]">timeline</span>
+<h3 class="font-headline-sm text-headline-sm text-base text-on-surface font-semibold">
+                  Exam Anxiety 5-Step Recovery Pathway
+                </h3>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-agent-mind/10 hover:bg-agent-mind/20 text-agent-mind border border-agent-mind/40 font-telemetry-sm text-telemetry-sm flex items-center gap-1.5 transition-all">
+<span class="material-symbols-outlined text-[16px]">download</span>
+<span>Download Visual Pathway (SVG)</span>
+</button>
+</div>
+<!-- Connected 5-Node Interactive Visual Spine -->
+<div class="grid grid-cols-1 md:grid-cols-5 gap-3 relative">
+<!-- Node 1 -->
+<div class="p-3 rounded-xl bg-surface-base/90 border border-agent-mind/60 shadow-[0_0_12px_rgba(0,245,212,0.15)] flex flex-col justify-between space-y-2 relative group hover:border-agent-mind transition-all">
+<div class="flex items-center justify-between">
+<span class="w-6 h-6 rounded-full bg-agent-mind text-surface-base font-telemetry-sm text-[11px] font-bold flex items-center justify-center">01</span>
+<span class="material-symbols-outlined text-agent-mind text-[18px]">air</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-[13px] text-on-surface font-bold">4-7-8 Parasympathetic</h4>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-1 leading-snug">Somatic breath reset to silence the amygdala alarm.</p>
+</div>
+<div class="font-label-caps text-[9px] text-agent-mind bg-agent-mind/10 px-1.5 py-0.5 rounded text-center">4 mins • Immediate</div>
+</div>
+<!-- Node 2 -->
+<div class="p-3 rounded-xl bg-surface-base/90 border border-border-subtle hover:border-border-active flex flex-col justify-between space-y-2 relative group transition-all">
+<div class="flex items-center justify-between">
+<span class="w-6 h-6 rounded-full bg-surface-elevated text-on-surface font-telemetry-sm text-[11px] font-bold flex items-center justify-center border border-border-subtle">02</span>
+<span class="material-symbols-outlined text-secondary text-[18px]">timer</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-[13px] text-on-surface font-bold">25-Min Pomodoro Sprint</h4>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-1 leading-snug">Pick ONE coding module. Break paralysis now.</p>
+</div>
+<div class="font-label-caps text-[9px] text-secondary bg-secondary/10 px-1.5 py-0.5 rounded text-center">25 mins • Focus</div>
+</div>
+<!-- Node 3 -->
+<div class="p-3 rounded-xl bg-surface-base/90 border border-border-subtle hover:border-border-active flex flex-col justify-between space-y-2 relative group transition-all">
+<div class="flex items-center justify-between">
+<span class="w-6 h-6 rounded-full bg-surface-elevated text-on-surface font-telemetry-sm text-[11px] font-bold flex items-center justify-center border border-border-subtle">03</span>
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-[18px]">quiz</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-[13px] text-on-surface font-bold">Active Recall / Self-Quiz</h4>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-1 leading-snug">Solve 3 high-probability problems without peeking.</p>
+</div>
+<div class="font-label-caps text-[9px] text-tertiary-fixed-dim bg-tertiary-fixed-dim/10 px-1.5 py-0.5 rounded text-center">30 mins • Agency</div>
+</div>
+<!-- Node 4 -->
+<div class="p-3 rounded-xl bg-surface-base/90 border border-border-subtle hover:border-border-active flex flex-col justify-between space-y-2 relative group transition-all">
+<div class="flex items-center justify-between">
+<span class="w-6 h-6 rounded-full bg-surface-elevated text-on-surface font-telemetry-sm text-[11px] font-bold flex items-center justify-center border border-border-subtle">04</span>
+<span class="material-symbols-outlined text-agent-clinical text-[18px]">bedtime</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-[13px] text-on-surface font-bold">Sleep &amp; Digital Sunset</h4>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-1 leading-snug">Screens off by 01:00 AM. 6h REM memory consolidation.</p>
+</div>
+<div class="font-label-caps text-[9px] text-agent-clinical bg-agent-clinical/10 px-1.5 py-0.5 rounded text-center">Restoration</div>
+</div>
+<!-- Node 5 -->
+<div class="p-3 rounded-xl bg-surface-base/90 border border-border-subtle hover:border-border-active flex flex-col justify-between space-y-2 relative group transition-all">
+<div class="flex items-center justify-between">
+<span class="w-6 h-6 rounded-full bg-surface-elevated text-on-surface font-telemetry-sm text-[11px] font-bold flex items-center justify-center border border-border-subtle">05</span>
+<span class="material-symbols-outlined text-status-calm text-[18px]">psychology</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-[13px] text-on-surface font-bold">Exam Grounding &amp; Anchor</h4>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-1 leading-snug">Morning calm reframe before entering test hall.</p>
+</div>
+<div class="font-label-caps text-[9px] text-status-calm bg-status-calm/10 px-1.5 py-0.5 rounded text-center">Final Mindset</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- ==================== BOTTOM FUTURISTIC INPUT & QUICK DISPATCHER ==================== -->
+<footer class="p-4 border-t border-border-subtle bg-surface-base/90 backdrop-blur-xl max-w-5xl mx-auto w-full space-y-3 flex-shrink-0 z-20">
+<!-- Action Suggestion Chips -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar">
+<button class="px-3 py-1 rounded-full bg-surface-card hover:bg-agent-mind/10 text-on-surface hover:text-agent-mind border border-border-subtle hover:border-agent-mind/40 font-telemetry-sm text-telemetry-sm flex items-center gap-1.5 whitespace-nowrap transition-all">
+<span>⚡ 5-Step Exam Recovery Path</span>
+</button>
+<button class="px-3 py-1 rounded-full bg-surface-card hover:bg-secondary/10 text-on-surface hover:text-secondary border border-border-subtle hover:border-secondary/40 font-telemetry-sm text-telemetry-sm flex items-center gap-1.5 whitespace-nowrap transition-all">
+<span>📊 Re-calculate PSS-4 Score</span>
+</button>
+<button class="px-3 py-1 rounded-full bg-surface-card hover:bg-agent-mind/10 text-on-surface hover:text-agent-mind border border-border-subtle hover:border-agent-mind/40 font-telemetry-sm text-telemetry-sm flex items-center gap-1.5 whitespace-nowrap transition-all">
+<span>🧘 5-4-3-2-1 Sensory Grounding</span>
+</button>
+<button class="px-3 py-1 rounded-full bg-surface-card hover:bg-agent-mind/10 text-on-surface hover:text-agent-mind border border-border-subtle hover:border-agent-mind/40 font-telemetry-sm text-telemetry-sm flex items-center gap-1.5 whitespace-nowrap transition-all">
+<span>💼 Placement Prep Anxiety</span>
+</button>
+</div>
+<!-- Main Input Capsule -->
+<div class="flex items-center gap-2 p-1.5 rounded-2xl bg-surface-card border border-border-active/60 shadow-[0_0_20px_rgba(0,245,212,0.15)] focus-within:border-agent-mind focus-within:shadow-[0_0_24px_rgba(0,245,212,0.3)] transition-all">
+<!-- Voice Input Microphone Pill -->
+<button class="px-3 py-2 rounded-xl bg-agent-mind/10 hover:bg-agent-mind/20 text-agent-mind border border-agent-mind/30 flex items-center gap-2 transition-all group active:scale-95" title="Voice Mode (&lt;300ms Hinglish STT)">
+<span class="material-symbols-outlined text-[18px]">mic</span>
+<div class="hidden sm:flex items-center gap-0.5 h-3">
+<span class="w-0.5 bg-agent-mind h-2 animate-bounce"></span>
+<span class="w-0.5 bg-agent-mind h-3 animate-bounce" style="animation-delay: 0.1s"></span>
+<span class="w-0.5 bg-agent-mind h-1.5 animate-bounce" style="animation-delay: 0.2s"></span>
+</div>
+</button>
+<!-- Attachment / Diagnostic Trigger -->
+<button class="p-2 text-on-surface-variant hover:text-on-surface transition-colors" title="Attach Cognitive Note or Syllabus">
+<span class="material-symbols-outlined text-[20px]">attach_file</span>
+</button>
+<!-- Prompt Text Input Area -->
+<input class="flex-1 bg-transparent border-0 focus:ring-0 text-on-surface placeholder:text-on-surface-variant/50 font-body-md text-body-md py-2 px-1 focus:outline-none" placeholder="Speak or type your stress triggers in Hinglish or English (e.g. 'Exam se bohot dar lag raha hai, roadmap do')..." type="text"/>
+<!-- Dynamic Token Counter -->
+<span class="hidden md:inline font-telemetry-sm text-[11px] text-on-surface-variant/60 px-2">
+          14 / 500 tokens
+        </span>
+<!-- Dispatch Send Button -->
+<button class="p-2.5 rounded-xl bg-agent-mind text-surface-base font-semibold shadow-[0_0_12px_rgba(0,245,212,0.5)] hover:shadow-[0_0_18px_rgba(0,245,212,0.8)] active:scale-95 transition-all flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">send</span>
+</button>
+</div>
+<!-- Compliance & Zero-Knowledge DPDP Disclaimer -->
+<div class="flex items-center justify-between text-[11px] font-telemetry-sm text-on-surface-variant/70 px-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[13px] text-status-calm">shield_lock</span>
+<span>Zero-Knowledge DPDP Act 2023 Compliant • End-to-End Cryptographic Anonymization</span>
+</div>
+<div class="hidden sm:flex items-center gap-3">
+<span>Clinical CBT Guardrails: <strong class="text-status-calm">Active</strong></span>
+<span>Fail-Safe Sensitivity: <strong class="text-agent-mind">100%</strong></span>
+</div>
+</div>
+</footer>
+</div>
+</body></html>
+
