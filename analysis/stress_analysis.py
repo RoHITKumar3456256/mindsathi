@@ -13,7 +13,17 @@ def analyze_stress_reduction(df: pd.DataFrame = None) -> dict:
         df = get_all_sessions_df()
         
     if df.empty:
-        return {"status": "error", "message": "No database entries found."}
+        return {
+            "status": "empty",
+            "message": "No database entries found yet. Complete a chat or PSS-4 test to begin!",
+            "sample_size": 0,
+            "mean_change": 0.0,
+            "t_statistic": 0.0,
+            "p_value": 1.0,
+            "cohens_d": 0.0,
+            "pre_mean": 0.0,
+            "post_mean": 0.0
+        }
         
     # Drop rows missing pre_pss or post_pss
     valid_df = df.dropna(subset=["pre_pss", "post_pss"]).copy()
@@ -23,7 +33,17 @@ def analyze_stress_reduction(df: pd.DataFrame = None) -> dict:
     
     n = len(unique_sessions)
     if n < 2:
-        return {"status": "error", "message": f"Insufficient complete sessions for paired t-test (N={n}, minimum 2 required)."}
+        return {
+            "status": "partial",
+            "message": f"Recorded N={n} complete sessions. Minimum 2 required for statistical paired t-test.",
+            "sample_size": n,
+            "mean_change": 0.0,
+            "t_statistic": 0.0,
+            "p_value": 1.0,
+            "cohens_d": 0.0,
+            "pre_mean": 0.0,
+            "post_mean": 0.0
+        }
         
     pre_scores = unique_sessions["pre_pss"].values
     post_scores = unique_sessions["post_pss"].values

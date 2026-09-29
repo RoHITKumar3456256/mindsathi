@@ -16,13 +16,25 @@ def evaluate_emotion_accuracy(df: pd.DataFrame = None) -> dict:
         df = get_all_sessions_df()
         
     if df.empty:
-        return {"status": "error", "message": "No session data available in database."}
+        return {
+            "status": "empty",
+            "message": "No session data available in database yet.",
+            "sample_size": 0,
+            "overall_accuracy": 0.0,
+            "report_string": "No sessions recorded yet."
+        }
         
     # Filter rows with both detected and self-reported emotions
     valid_df = df.dropna(subset=["detected_emotion", "self_emotion"]).copy()
     
     if len(valid_df) == 0:
-        return {"status": "error", "message": "No session records with self-reported emotions found yet."}
+        return {
+            "status": "partial",
+            "message": "No session records with self-reported emotions found yet.",
+            "sample_size": 0,
+            "overall_accuracy": 0.0,
+            "report_string": "No self-reported emotion records yet."
+        }
         
     y_true = valid_df["self_emotion"].str.lower().str.strip()
     y_pred = valid_df["detected_emotion"].str.lower().str.strip()

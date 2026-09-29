@@ -52,13 +52,13 @@ LOGO_PATH = LOGO_PNG_PATH
 # 2. SESSION STATE INITIALIZATION
 # -----------------------------------------------------------------------------
 if "theme" not in st.session_state:
-    st.session_state.theme = "dark"
+    st.session_state.theme = "iridescent"
 if "user" not in st.session_state:
     st.session_state.user = None
 if "session_id" not in st.session_state:
     st.session_state.session_id = str(uuid.uuid4())
 if "step" not in st.session_state:
-    st.session_state.step = "chat"
+    st.session_state.step = "main_hub"
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "pre_pss_score" not in st.session_state:
@@ -538,113 +538,275 @@ dark_css = """
 </style>
 """
 
-light_css = """
+iridescent_css = """
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
     :root {
-        --bg-primary: #F8FAFC;
-        --accent-teal: #0891B2;
-        --accent-purple: #7C3AED;
-        --text-primary: #0F172A;
-        --text-secondary: #64748B;
+        --primary-violet: #8B5CF6;
+        --primary-dark: #7C3AED;
+        --secondary-rose: #EC4899;
+        --accent-cyan: #06B6D4;
+        --card-bg: #FFFFFF;
+        --card-border: rgba(226, 218, 248, 0.9);
+        --text-headline: #1E1B2E;
+        --text-sub: #6B7280;
+        --pill-shadow: 0 6px 20px rgba(124, 58, 237, 0.25);
     }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #FAF5FF; }
+    ::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.25); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(139, 92, 246, 0.5); }
+
+    /* Hide Streamlit Header, Toolbar, Decoration */
+    header[data-testid="stHeader"] {
+        display: none !important;
+        height: 0px !important;
+        visibility: hidden !important;
+    }
+    .stAppDeployButton { display: none !important; visibility: hidden !important; }
+    div[data-testid="stToolbar"] { display: none !important; visibility: hidden !important; }
+    div[data-testid="stDecoration"] { display: none !important; height: 0px !important; }
+    #MainMenu { display: none !important; }
+    footer { display: none !important; }
+
+    /* Main Background - Iridescent Pastel Aurora */
     .stApp {
-        background: linear-gradient(135deg, #F0F4FF 0%, #FAFBFF 50%, #F0FBF9 100%) !important;
-        font-family: 'Inter', system-ui, sans-serif !important;
-        color: #0F172A !important;
+        background: radial-gradient(circle at 10% 12%, #F5ECFD 0%, #FAF5FF 35%, #EDE9FE 68%, #FCE8F3 100%) !important;
+        font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif !important;
+        color: #1E1B2E !important;
     }
+
+    /* Sidebar - Glassmorphism Porcelain */
     section[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #FFFFFF, #F8F9FF) !important;
-        border-right: 1px solid #E2E8F0 !important;
+        background: rgba(255, 255, 255, 0.82) !important;
+        backdrop-filter: blur(24px) !important;
+        -webkit-backdrop-filter: blur(24px) !important;
+        border-right: 1.5px solid rgba(226, 218, 248, 0.9) !important;
+        box-shadow: 4px 0 28px rgba(139, 92, 246, 0.05) !important;
     }
+    section[data-testid="stSidebar"] > div { padding-top: 1.2rem; }
+
+    /* Brand Header */
     .sidebar-brand-name {
-        font-size: 1.3rem; font-weight: 800;
-        background: linear-gradient(135deg, #0891B2, #7C3AED);
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        font-size: 1.35rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1.1;
+        font-family: 'Plus Jakarta Sans', sans-serif;
     }
+    .sidebar-brand-tag {
+        font-size: 0.68rem;
+        color: #7C7892;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+    }
+
+    /* Pill Buttons (Pinterest Style) */
     div.stButton > button {
-        background: linear-gradient(135deg, #F1F5F9, #E2E8F0) !important;
+        background: #FFFFFF !important;
         color: #374151 !important;
-        border: 1px solid #CBD5E1 !important;
-        border-radius: 12px !important;
-        font-weight: 600 !important;
-        transition: all 0.2s !important;
+        border: 1.5px solid rgba(226, 218, 248, 0.95) !important;
+        border-radius: 9999px !important;
+        font-weight: 700 !important;
+        font-size: 0.88rem !important;
+        padding: 0.5rem 1.25rem !important;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 0 4px 14px rgba(124, 58, 237, 0.05) !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
     div.stButton > button:hover {
-        background: linear-gradient(135deg, #7C3AED, #0891B2) !important;
-        color: white !important; border-color: transparent !important;
+        background: linear-gradient(135deg, #8B5CF6, #7C3AED) !important;
+        color: #FFFFFF !important;
+        border-color: transparent !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 6px 20px rgba(124,58,237,0.3) !important;
+        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.28) !important;
     }
     div.stButton > button[kind="primary"] {
-        background: linear-gradient(135deg, #7C3AED, #0891B2) !important;
-        color: white !important; border-color: transparent !important;
+        background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%) !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        border-radius: 9999px !important;
+        box-shadow: 0 6px 20px rgba(124, 58, 237, 0.3) !important;
     }
+    div.stButton > button[kind="primary"]:hover {
+        background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%) !important;
+        box-shadow: 0 10px 28px rgba(124, 58, 237, 0.45) !important;
+        transform: translateY(-2px) !important;
+    }
+    div.stButton > button:active { transform: translateY(1px) !important; }
+
+    /* Hero Greeting Wrap */
     .hero-header {
-        background: linear-gradient(135deg, #7C3AED, #0891B2);
-        border-radius: 20px; padding: 1.6rem 2rem; margin-bottom: 1.4rem;
-        box-shadow: 0 8px 24px rgba(124,58,237,0.25);
+        background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #A855F7 100%) !important;
+        border-radius: 28px !important;
+        padding: 1.8rem 2.2rem !important;
+        margin-bottom: 1.4rem !important;
+        box-shadow: 0 16px 40px -8px rgba(124, 58, 237, 0.35) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
     }
     .hero-title {
-        font-size: 1.9rem; font-weight: 800; color: white;
-        margin: 0 0 4px; letter-spacing: -0.02em;
+        font-size: 2.1rem !important;
+        font-weight: 800 !important;
+        color: #FFFFFF !important;
+        margin: 0 0 6px 0 !important;
+        letter-spacing: -0.02em !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
-    .hero-sub { color: rgba(255,255,255,0.75); font-size: 0.92rem; margin: 0; }
+    .hero-sub {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-size: 0.95rem !important;
+        margin: 0 !important;
+        font-weight: 500 !important;
+    }
+
+    /* Pinterest Rounded Porcelain Cards */
     .action-card {
-        background: white; border: 1px solid #E2E8F0;
-        border-radius: 20px; padding: 1.8rem 1.5rem; text-align: center;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.06); transition: all 0.25s;
-        height: 100%; position: relative;
+        background: #FFFFFF !important;
+        border: 1.5px solid rgba(226, 218, 248, 0.9) !important;
+        border-radius: 26px !important;
+        padding: 1.8rem 1.6rem !important;
+        box-shadow: 0 12px 36px -6px rgba(139, 92, 246, 0.08), 0 4px 14px -2px rgba(139, 92, 246, 0.04) !important;
+        transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        margin-bottom: 0.5rem !important;
     }
     .action-card:hover {
-        border-color: #7C3AED; transform: translateY(-4px);
-        box-shadow: 0 12px 36px rgba(124,58,237,0.15);
+        transform: translateY(-4px) !important;
+        border-color: #8B5CF6 !important;
+        box-shadow: 0 18px 44px -6px rgba(139, 92, 246, 0.16) !important;
     }
-    .card-title { color: #1E293B; }
-    .card-desc { color: #64748B; }
+    .card-icon { font-size: 2rem !important; margin-bottom: 0.6rem !important; display: block !important; }
+    .card-title {
+        color: #1E1B2E !important;
+        font-size: 1.12rem !important;
+        font-weight: 700 !important;
+        margin-bottom: 0.4rem !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+    }
+    .card-desc {
+        color: #6B7280 !important;
+        font-size: 0.88rem !important;
+        line-height: 1.5 !important;
+        margin-bottom: 0.8rem !important;
+    }
+
+    /* Topic Pills */
     .topic-pill {
-        background: white; border: 1px solid #E2E8F0;
-        border-radius: 14px; padding: 1rem 0.5rem;
-        text-align: center; font-size: 0.82rem; font-weight: 600; color: #7C3AED;
-        transition: all 0.2s;
+        background: #FFFFFF !important;
+        border: 1.5px solid rgba(226, 218, 248, 0.9) !important;
+        border-radius: 9999px !important;
+        padding: 0.75rem 1.1rem !important;
+        text-align: center !important;
+        font-size: 0.84rem !important;
+        font-weight: 700 !important;
+        color: #4B5563 !important;
+        box-shadow: 0 4px 14px rgba(139, 92, 246, 0.05) !important;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
     }
-    .topic-pill:hover { border-color: #7C3AED; box-shadow: 0 4px 12px rgba(124,58,237,0.15); transform: translateY(-2px); }
-    div[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
-        background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(124,58,237,0.04)) !important;
-        border-radius: 18px !important; margin-left: 3rem !important;
-        border: 1px solid rgba(124,58,237,0.15) !important;
+    .topic-pill:hover {
+        background: linear-gradient(135deg, #8B5CF6, #7C3AED) !important;
+        color: #FFFFFF !important;
+        border-color: transparent !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3) !important;
     }
+
+    /* Pinterest Smart Chat Bubble Styling */
     div[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
-        background: white !important; border-radius: 18px !important;
-        margin-right: 3rem !important; border: 1px solid #E2E8F0 !important;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
+        background: #FFFFFF !important;
+        border: 1.5px solid rgba(226, 218, 248, 0.85) !important;
+        border-radius: 24px 24px 24px 6px !important;
+        padding: 1.2rem 1.6rem !important;
+        box-shadow: 0 10px 30px -4px rgba(139, 92, 246, 0.08) !important;
+        margin-bottom: 1rem !important;
+        color: #1E1B2E !important;
     }
-    .emotion-badge {
-        background: rgba(8,145,178,0.1); color: #0891B2;
-        border: 1px solid rgba(8,145,178,0.25); padding: 2px 10px;
-        border-radius: 20px; font-size: 0.73rem; font-weight: 600;
-        display: inline-flex; align-items: center; gap: 4px; margin-top: 6px;
+    div[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
+        background: linear-gradient(135deg, #F3E8FF 0%, #EDE9FE 100%) !important;
+        border: 1.5px solid rgba(196, 181, 253, 0.7) !important;
+        border-radius: 24px 24px 6px 24px !important;
+        padding: 1.1rem 1.5rem !important;
+        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.05) !important;
+        margin-bottom: 1rem !important;
+        color: #1E1B2E !important;
     }
+
+    /* Floating Pill Chat Input */
+    div[data-testid="stChatInput"] {
+        background: #FFFFFF !important;
+        border: 1.5px solid rgba(196, 181, 253, 0.8) !important;
+        border-radius: 9999px !important;
+        box-shadow: 0 12px 36px rgba(139, 92, 246, 0.12) !important;
+        padding: 6px 16px !important;
+    }
+    div[data-testid="stChatInput"] textarea {
+        color: #1E1B2E !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        font-size: 0.95rem !important;
+    }
+    div[data-testid="stChatInput"] button {
+        background: linear-gradient(135deg, #8B5CF6, #7C3AED) !important;
+        color: white !important;
+        border-radius: 50% !important;
+    }
+
+    /* Metric Containers */
     div[data-testid="metric-container"] {
-        background: white !important; border: 1px solid #E2E8F0 !important;
-        border-radius: 14px !important; padding: 1rem !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+        background: #FFFFFF !important;
+        border: 1.5px solid rgba(226, 218, 248, 0.9) !important;
+        border-radius: 20px !important;
+        padding: 1.2rem !important;
+        box-shadow: 0 8px 24px rgba(139, 92, 246, 0.06) !important;
     }
-    hr { border-color: #E2E8F0 !important; }
-    .user-pill { background: rgba(8,145,178,0.08); border: 1px solid rgba(8,145,178,0.2); }
-    .user-avatar { background: linear-gradient(135deg, #7C3AED, #0891B2); }
-    .sidebar-brand-tag { color: #94A3B8; }
-    .stat-chip { background: rgba(124,58,237,0.08); border-color: rgba(124,58,237,0.15); color: #7C3AED; }
-    .app-title-big {
-        background: linear-gradient(135deg, #1E293B, #7C3AED, #0891B2);
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+
+    .emotion-badge {
+        background: rgba(139, 92, 246, 0.1);
+        color: #7C3AED;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+        padding: 3px 12px;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
     }
-    .app-tagline { color: #64748B; }
-    .brand-logo-big { background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(8,145,178,0.1)); border-color: rgba(124,58,237,0.2); }
+    .user-pill {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #FFFFFF;
+        border: 1.5px solid rgba(226, 218, 248, 0.95);
+        border-radius: 9999px;
+        padding: 0.5rem 1rem;
+        margin-bottom: 0.8rem;
+        box-shadow: 0 4px 14px rgba(139, 92, 246, 0.06);
+    }
+    .user-avatar {
+        width: 34px; height: 34px;
+        background: linear-gradient(135deg, #8B5CF6, #EC4899);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.9rem; font-weight: 700; color: white;
+    }
+    .user-name { font-size: 0.9rem; font-weight: 700; color: #1E1B2E; }
+    .user-tag { font-size: 0.72rem; color: #6B7280; font-weight: 500; }
 </style>
 """
 
-st.markdown(dark_css if st.session_state.theme == "dark" else light_css, unsafe_allow_html=True)
+st.markdown(dark_css if st.session_state.theme == "obsidian" else iridescent_css, unsafe_allow_html=True)
 
 # -----------------------------------------------------------------------------
 # 4. SIDEBAR
@@ -661,10 +823,10 @@ with st.sidebar:
         st.markdown(
             "<div style='padding-top:2px;'>"
             "<div style='display:flex;align-items:center;gap:6px;'>"
-            "<span style='font-size:1.25rem;font-weight:800;color:#00F5D4;font-family:\"Plus Jakarta Sans\",sans-serif;'>MindSaathi</span>"
-            "<span style='font-size:0.6rem;background:rgba(0,245,212,0.15);color:#00F5D4;border:1px solid rgba(0,245,212,0.3);padding:1px 5px;border-radius:4px;font-family:\"JetBrains Mono\",monospace;'>v2.4.0 RC</span>"
+            "<span style='font-size:1.3rem;font-weight:800;background:linear-gradient(135deg, #7C3AED, #EC4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-family:\"Plus Jakarta Sans\",sans-serif;'>MindSaathi</span>"
+            "<span style='font-size:0.6rem;background:rgba(139,92,246,0.15);color:#7C3AED;border:1px solid rgba(139,92,246,0.3);padding:1px 6px;border-radius:9999px;font-weight:700;'>v2.5 AI</span>"
             "</div>"
-            "<div style='font-size:0.7rem;color:#94A3B8;font-weight:500;font-family:\"JetBrains Mono\",monospace;'>Clinical AI Terminal</div>"
+            "<div style='font-size:0.72rem;color:#7C7892;font-weight:600;'>Iridescent AI Companion</div>"
             "</div>",
             unsafe_allow_html=True
         )
@@ -676,6 +838,17 @@ with st.sidebar:
         st.session_state.step = "chat"
         st.session_state.show_chat_pss4 = False
         st.rerun()
+
+    # ── Theme Switcher ──
+    col_th1, col_th2 = st.columns(2)
+    with col_th1:
+        if st.button("🌸 Aurora", use_container_width=True, type="primary" if st.session_state.theme == "iridescent" else "secondary"):
+            st.session_state.theme = "iridescent"
+            st.rerun()
+    with col_th2:
+        if st.button("🌙 Dark", use_container_width=True, type="primary" if st.session_state.theme == "obsidian" else "secondary"):
+            st.session_state.theme = "obsidian"
+            st.rerun()
 
     # ── 5-Tier Neural Routing Nervous System Status Widget ──
     st.markdown("""
@@ -852,90 +1025,184 @@ if st.session_state.step == "onboarding":
 # SCREEN 2: MAIN HUB
 # ==============================================================================
 elif st.session_state.step == "main_hub":
-    u_name = st.session_state.user['full_name'].split()[0] if st.session_state.user else None
-    greeting = f"Welcome back, {u_name}! 👋" if u_name else "Meet MindSaathi 👋"
+    u_name = st.session_state.user['full_name'].split()[0] if st.session_state.user else "Friend"
+    now_hour = datetime.now().hour
+    if now_hour < 12:
+        time_greet = "Good Morning"
+    elif now_hour < 17:
+        time_greet = "Good Afternoon"
+    else:
+        time_greet = "Good Evening"
 
+    # ── Top Pinterest Greeting Bar ──
     st.markdown(f"""
-    <div class="hero-header">
-        <div class="hero-title">{greeting}</div>
-        <div class="hero-sub">Your AI-powered mental health companion — empathetic, CBT-informed, and always here for you</div>
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom:1.4rem;">
+        <div>
+            <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(139,92,246,0.1); border:1px solid rgba(139,92,246,0.25); padding:4px 14px; border-radius:9999px; margin-bottom:8px;">
+                <span style="font-size:0.8rem; font-weight:700; color:#7C3AED;">Hi, {u_name} • Welcome Back</span>
+            </div>
+            <h1 style="font-size:2.3rem; font-weight:800; color:#1E1B2E; margin:0; line-height:1.2; font-family:'Plus Jakarta Sans',sans-serif; letter-spacing:-0.02em;">
+                {time_greet}, How can I help you?
+            </h1>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <div style="background:#FFFFFF; border:1.5px solid rgba(226,218,248,0.9); border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(139,92,246,0.06); font-size:1.1rem; cursor:pointer;" title="Notifications">
+                🔔
+            </div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
-    c_act1, c_act2 = st.columns(2, gap="medium")
-    with c_act1:
+    # ── Pinterest Hero & Side Feature Grid ──
+    col_hero_left, col_hero_right = st.columns([1.1, 1], gap="medium")
+
+    with col_hero_left:
         st.markdown("""
-        <div class="action-card">
-            <span class="card-icon">💬</span>
-            <div class="card-title">Chat with MindSaathi</div>
-            <div class="card-desc">Text & Hinglish CBT therapy chat with real-time AI responses. Talk about anything — exams, stress, anxiety, relationships.</div>
+        <div class="action-card" style="min-height:260px; justify-content:space-between; background:linear-gradient(180deg, #FFFFFF 0%, #FAF5FF 100%);">
+            <div>
+                <div style="width:48px; height:48px; border-radius:18px; background:linear-gradient(135deg, #8B5CF6, #EC4899); display:flex; align-items:center; justify-content:center; font-size:1.4rem; color:white; margin-bottom:1rem; box-shadow:0 6px 18px rgba(139,92,246,0.3);">
+                    ✦
+                </div>
+                <div style="font-size:1.4rem; font-weight:800; color:#1E1B2E; margin-bottom:0.4rem; font-family:'Plus Jakarta Sans',sans-serif;">
+                    Talk to AI assistant
+                </div>
+                <div style="font-size:0.92rem; color:#6B7280; line-height:1.5; margin-bottom:1.2rem;">
+                    Empathetic, CBT-informed mental wellness companion. Multilingual Hinglish support for exams, stress, relationships, and self-care.
+                </div>
+            </div>
+            <div style="font-size:0.8rem; color:#8B5CF6; font-weight:700; margin-bottom:0.8rem;">
+                Let's try it now ➔
+            </div>
         </div>
         """, unsafe_allow_html=True)
-        if st.button("Start Chat Session →", type="primary", use_container_width=True, key="btn_hub_chat"):
+        if st.button("Start Talking ✦", type="primary", use_container_width=True, key="btn_start_talking_hero"):
             st.session_state.step = "chat"
             st.rerun()
 
-    with c_act2:
+    with col_hero_right:
         st.markdown("""
-        <div class="action-card">
-            <span class="card-icon">🎙️</span>
-            <div class="card-title">Voice Assessment Mode</div>
-            <div class="card-desc">Speak naturally and get voice-guided emotional support with an animated 3D waveform visualizer.</div>
+        <div class="action-card" style="margin-bottom:12px; padding:1.2rem 1.4rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div style="width:40px; height:40px; border-radius:14px; background:rgba(139,92,246,0.12); display:flex; align-items:center; justify-content:center; font-size:1.2rem;">
+                        🎙️
+                    </div>
+                    <div>
+                        <div style="font-weight:700; color:#1E1B2E; font-size:1.02rem;">Voice Analysis</div>
+                        <div style="font-size:0.8rem; color:#6B7280;">Voice to text Assistant</div>
+                    </div>
+                </div>
+                <span style="color:#8B5CF6; font-size:1.2rem; font-weight:700;">➔</span>
+            </div>
         </div>
         """, unsafe_allow_html=True)
-        if st.button("Open Voice Mode →", type="primary", use_container_width=True, key="btn_hub_voice"):
+        if st.button("Open Voice Mode 🎙️", use_container_width=True, key="btn_quick_voice"):
             st.session_state.step = "voice"
             st.rerun()
 
-    c_act3, c_act4 = st.columns(2, gap="medium")
-    with c_act3:
         st.markdown("""
-        <div class="action-card">
-            <span class="card-icon">🌿</span>
-            <div class="card-title">PSS-4 Stress Assessment</div>
-            <div class="card-desc">Standardized Cohen (1983) 4-item psychometric test. Measure your perceived stress score (0–16) with reverse-scored accuracy.</div>
+        <div class="action-card" style="padding:1.2rem 1.4rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div style="width:40px; height:40px; border-radius:14px; background:rgba(16,185,129,0.12); display:flex; align-items:center; justify-content:center; font-size:1.2rem;">
+                        🌿
+                    </div>
+                    <div>
+                        <div style="font-weight:700; color:#1E1B2E; font-size:1.02rem;">PSS-4 Stress Scale</div>
+                        <div style="font-size:0.8rem; color:#6B7280;">Standardized diagnostic test</div>
+                    </div>
+                </div>
+                <span style="color:#10B981; font-size:1.2rem; font-weight:700;">➔</span>
+            </div>
         </div>
         """, unsafe_allow_html=True)
-        if st.button("Take PSS-4 Diagnostic →", type="primary", use_container_width=True, key="btn_hub_pss4"):
+        if st.button("Take Stress Test 🌿", use_container_width=True, key="btn_quick_pss4"):
             st.session_state.step = "pss4"
             st.rerun()
 
-    with c_act4:
-        st.markdown("""
-        <div class="action-card">
-            <span class="card-icon">⚡</span>
-            <div class="card-title">Clinical AI Terminal (Stitch)</div>
-            <div class="card-desc">Ultra high-tech Google Stitch console with real-time 5-tier routing telemetry, affect tracking, and somatic care pathways.</div>
-        </div>
-        """, unsafe_allow_html=True)
-        if st.button("Open Clinical Terminal →", type="primary", use_container_width=True, key="btn_hub_stitch"):
-            st.session_state.step = "stitch_console"
+    # ── Topics Pills (Pinterest Category Bar) ──
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("""
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem;">
+        <span style="font-size:1.1rem; font-weight:800; color:#1E1B2E; font-family:'Plus Jakarta Sans',sans-serif;">Topics</span>
+        <span style="font-size:0.82rem; font-weight:700; color:#8B5CF6; cursor:pointer;">See All</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    t_col1, t_col2, t_col3, t_col4 = st.columns(4)
+    with t_col1:
+        if st.button("✦ Daily Life", use_container_width=True, key="t_daily"):
+            st.session_state.step = "chat"
+            st.rerun()
+    with t_col2:
+        if st.button("🎓 Exam Stress", use_container_width=True, key="t_exam"):
+            st.session_state.messages.append({"role": "user", "content": "MindSaathi, mujhe exams ke baare mein stress ho raha hai, help karo"})
+            st.session_state.step = "chat"
+            st.rerun()
+    with t_col3:
+        if st.button("💼 Career & Placement", use_container_width=True, key="t_career"):
+            st.session_state.messages.append({"role": "user", "content": "MindSaathi, placement aur career anxiety ho rahi hai, please guide me"})
+            st.session_state.step = "chat"
+            st.rerun()
+    with t_col4:
+        if st.button("🌙 Sleep & Grounding", use_container_width=True, key="t_sleep"):
+            st.session_state.messages.append({"role": "user", "content": "MindSaathi, mujhe neend nahi aa rahi aur overthinking ho rahi hai"})
+            st.session_state.step = "chat"
             st.rerun()
 
+    # ── Curated Discovery Cards (Pinterest Bottom Layout) ──
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div style="font-size:0.78rem;font-weight:700;color:#64748B;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.8rem">Quick Topics</div>', unsafe_allow_html=True)
+    d_col1, d_col2, d_col3 = st.columns(3, gap="medium")
 
-    t1, t2, t3, t4 = st.columns(4)
-    topics = [
-        ("📈", "Academic & Exams"),
-        ("🛡️", "Mental Health & CBT"),
-        ("💡", "Self Development"),
-        ("🚀", "Career & Placement"),
-    ]
-    for col, (icon, label) in zip([t1, t2, t3, t4], topics):
-        with col:
-            st.markdown(f'<div class="topic-pill"><span class="topic-icon">{icon}</span>{label}</div>', unsafe_allow_html=True)
+    with d_col1:
+        st.markdown("""
+        <div class="action-card">
+            <div>
+                <div style="font-size:0.75rem; font-weight:700; color:#8B5CF6; text-transform:uppercase; margin-bottom:4px;">Diagnostic</div>
+                <div style="font-weight:800; color:#1E1B2E; font-size:1.05rem; margin-bottom:6px;">What is PSS-4 Delta?</div>
+                <div style="font-size:0.84rem; color:#6B7280; line-height:1.45; margin-bottom:12px;">
+                    Measures longitudinal perceived stress change (0–16 scale) to benchmark coping resilience.
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Discover PSS-4 ➔", use_container_width=True, key="disc_pss4"):
+            st.session_state.step = "pss4"
+            st.rerun()
 
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div style="font-size:0.78rem;font-weight:700;color:#64748B;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.8rem">Quick Stats</div>', unsafe_allow_html=True)
-    s1, s2, s3 = st.columns(3)
-    with s1:
-        total_msgs = len([m for m in st.session_state.messages if m["role"] == "user"])
-        st.metric("Messages Today", total_msgs)
-    with s2:
-        st.metric("AI Model", "Gemini 2.5 Flash")
-    with s3:
-        st.metric("Mode", "🌙 Dark" if st.session_state.theme == "dark" else "☀️ Light")
+    with d_col2:
+        st.markdown("""
+        <div class="action-card">
+            <div>
+                <div style="font-size:0.75rem; font-weight:700; color:#EC4899; text-transform:uppercase; margin-bottom:4px;">Neuroscience</div>
+                <div style="font-weight:800; color:#1E1B2E; font-size:1.05rem; margin-bottom:6px;">Why is sleep important?</div>
+                <div style="font-size:0.84rem; color:#6B7280; line-height:1.45; margin-bottom:12px;">
+                    Quality sleep restores prefrontal cognitive control and regulates stress cortisol.
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Explore Sleep CBT ➔", use_container_width=True, key="disc_sleep"):
+            st.session_state.messages.append({"role": "user", "content": "MindSaathi, sleep hygiene aur nighttime relaxation routine ka plan batao"})
+            st.session_state.step = "chat"
+            st.rerun()
+
+    with d_col3:
+        st.markdown("""
+        <div class="action-card">
+            <div>
+                <div style="font-size:0.75rem; font-weight:700; color:#10B981; text-transform:uppercase; margin-bottom:4px;">Somatic Reset</div>
+                <div style="font-weight:800; color:#1E1B2E; font-size:1.05rem; margin-bottom:6px;">5-4-3-2-1 Grounding</div>
+                <div style="font-size:0.84rem; color:#6B7280; line-height:1.45; margin-bottom:12px;">
+                    Sensory engagement pathway clinically proven to deactivate acute autonomic panic.
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Start Grounding ➔", use_container_width=True, key="disc_ground"):
+            st.session_state.messages.append({"role": "user", "content": "MindSaathi, mujhe 5-4-3-2-1 sensory grounding pathway exercise karwao"})
+            st.session_state.step = "chat"
+            st.rerun()
 
 # ==============================================================================
 # SCREEN 3: VOICE ASSESSMENT — POWERED BY GROQ WHISPER & 3D WAVEFORM
@@ -962,8 +1229,11 @@ elif st.session_state.step == "voice":
         st.markdown("### 🎤 **Speak with MindSaathi**")
         st.caption("Click the red record button below, speak your thoughts, and click stop.")
         
-        # Streamlit Native Microphone Input
-        audio_data = st.audio_input("🎙️ Record Voice Input", key="voice_audio_input")
+        # Streamlit Native Microphone Input with safe fallback
+        if hasattr(st, "audio_input"):
+            audio_data = st.audio_input("🎙️ Record Voice Input", key="voice_audio_input")
+        else:
+            audio_data = st.file_uploader("🎙️ Upload Voice Recording (WAV/MP3/M4A)", type=["wav", "mp3", "m4a", "ogg"], key="voice_audio_fallback")
         
         if audio_data is not None:
             with st.spinner("⚡ Transcribing audio with Groq Whisper Large v3..."):

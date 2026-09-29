@@ -1,25 +1,28 @@
-# MindSaathi AI Mental Health Chatbot - Python Dependencies
+# MindSaathi AI Mental Health Platform - Dependencies
 
-# Core Web Framework
-streamlit==1.35.0
+# Core Web Framework (Streamlit 1.41+ provides st.audio_input & st.components)
+streamlit>=1.41.0
 
-# AI & NLP Components
-google-generativeai==0.7.0
-transformers==4.41.0
-torch==2.3.0
-sentencepiece==0.2.0
+# AI, Voice & NLP Components
+google-generativeai>=0.7.0
+groq>=0.9.0
+transformers>=4.41.0
+torch>=2.2.0
+sentencepiece>=0.2.0
+
+# Backend & Integrations
+supabase>=2.4.0
+python-dotenv>=1.0.1
+requests>=2.31.0
 
 # Data & Statistical Analysis
-pandas==2.2.2
-numpy==1.26.4
-scikit-learn==1.5.0
-scipy==1.13.0
-matplotlib==3.9.0
-seaborn==0.13.2
-
-# Utilities & Configuration
-python-dotenv==1.0.1
-Pillow==10.3.0
+pandas>=2.2.0
+numpy>=1.26.0
+scikit-learn>=1.5.0
+scipy>=1.13.0
+matplotlib>=3.9.0
+seaborn>=0.13.0
+Pillow>=10.3.0
 
 # Automated Testing
-pytest==8.2.0
+pytest>=8.2.0
