@@ -69,6 +69,10 @@ if "show_chat_pss4" not in st.session_state:
     st.session_state.show_chat_pss4 = False
 if "start_time" not in st.session_state:
     st.session_state.start_time = time.time()
+if "intake_done" not in st.session_state:
+    st.session_state.intake_done = False
+if "intake_answers" not in st.session_state:
+    st.session_state.intake_answers = {}
 
 # -----------------------------------------------------------------------------
 # 3. GLOBAL CSS — GOOGLE STITCH CLINICAL DESIGN SYSTEM
@@ -940,7 +944,7 @@ with st.sidebar:
 # -----------------------------------------------------------------------------
 # 5. TOP NAVIGATION BAR
 # -----------------------------------------------------------------------------
-nav1, nav2, nav3, nav4, nav5, nav6, nav7 = st.columns([1, 1, 1, 1.2, 1.2, 1.1, 1])
+nav1, nav2, nav3, nav4, nav5, nav6 = st.columns([1, 1, 1, 1.2, 1.2, 1])
 with nav1:
     if st.button("🏠 Home", use_container_width=True,
                  type="primary" if st.session_state.step == "main_hub" else "secondary"):
@@ -962,23 +966,17 @@ with nav4:
         st.session_state.step = "pss4"
         st.rerun()
 with nav5:
-    if st.button("⚡ Console", use_container_width=True,
-                 type="primary" if st.session_state.step == "stitch_console" else "secondary"):
-        st.session_state.step = "stitch_console"
-        st.rerun()
-with nav6:
     if st.button("📊 Dashboard", use_container_width=True,
                  type="primary" if st.session_state.step == "dashboard" else "secondary"):
         st.session_state.step = "dashboard"
         st.rerun()
-with nav7:
+with nav6:
     if not st.session_state.user:
         if st.button("👤 Account", use_container_width=True,
                      type="primary" if st.session_state.step == "auth" else "secondary"):
             st.session_state.step = "auth"
             st.rerun()
     else:
-        initials_nav = "".join(w[0].upper() for w in st.session_state.user['full_name'].split()[:2])
         if st.button(f"👤 {st.session_state.user['full_name'].split()[0]}", use_container_width=True, type="secondary"):
             st.session_state.step = "dashboard"
             st.rerun()
@@ -1485,81 +1483,128 @@ elif st.session_state.step == "dashboard":
         if len(fig_paths) > 3 and os.path.exists(fig_paths[3]):
             st.image(fig_paths[3], caption="Fig 4: Gender vs Helpfulness", use_container_width=True)
 
-# ==============================================================================
-# SCREEN: STITCH CLINICAL AI TERMINAL (GOOGLE STITCH UI)
-# ==============================================================================
-elif st.session_state.step == "stitch_console":
-    st.markdown("""
-    <div class="hero-header">
-        <div class="hero-title">⚡ MindSaathi Clinical AI Console</div>
-        <div class="hero-sub">Direct Google Stitch Implementation • 5-Tier Routing Telemetry • PSS-4 Diagnostic • Somatic Care Pathway</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    stitch_file = os.path.join(os.path.dirname(__file__), "assets", "stitch_console.html")
-    if os.path.exists(stitch_file):
-        with open(stitch_file, "r", encoding="utf-8") as f:
-            stitch_html_content = f.read()
-        components.html(stitch_html_content, height=920, scrolling=True)
-    else:
-        st.error("Stitch console asset not found.")
-
-    st.markdown("<br>", unsafe_allow_html=True)
-    b_col1, b_col2 = st.columns(2)
-    with b_col1:
-        if st.button("💬 Open Interactive Python Chat Hub →", type="primary", use_container_width=True):
-            st.session_state.step = "chat"
-            st.rerun()
-    with b_col2:
-        if st.button("🌿 Take Self-Administered PSS-4 Test →", use_container_width=True):
-            st.session_state.step = "pss4"
-            st.rerun()
 
 # ==============================================================================
 # SCREEN 6: CHAT COMPANION — NEURAL MULTI-AGENT ORCHESTRATOR
 # ==============================================================================
+
 elif st.session_state.step == "chat":
-    # ── Google Stitch: Telemetry Corridors Top Bar ──
-    sess_short = st.session_state.session_id[:8].upper()
-    st.markdown(f"""
-    <div style="background:rgba(24,34,50,0.85);border:1px solid rgba(0,245,212,0.22);border-radius:14px;padding:12px 18px;margin-bottom:14px;box-shadow:0 0 24px rgba(0,245,212,0.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+
+    # ══════════════════════════════════════════════
+    # 10-QUESTION MENTAL HEALTH INTAKE QUIZ (First time only)
+    # ══════════════════════════════════════════════
+    if not st.session_state.intake_done:
+        st.markdown("""
+        <div style="background:linear-gradient(135deg,#F5F3FF,#FDF4FF);border:1.5px solid rgba(139,92,246,0.25);border-radius:24px;padding:2rem 2rem 1.5rem 2rem;margin-bottom:1.5rem;box-shadow:0 8px 32px rgba(139,92,246,0.08);">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:0.4rem;">
+                <div style="width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#8B5CF6,#EC4899);display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 4px 16px rgba(139,92,246,0.3);">🧠</div>
+                <div>
+                    <div style="font-size:1.2rem;font-weight:800;color:#1E1B2E;font-family:'Plus Jakarta Sans',sans-serif;line-height:1.2;">Pehle Thoda Jaante Hain Aapko</div>
+                    <div style="font-size:0.8rem;color:#8B5CF6;font-weight:600;">10 quick sawaal — sirf 2 minute lagenge ✨</div>
+                </div>
+            </div>
+            <p style="font-size:0.85rem;color:#64748B;margin:0.8rem 0 0 0;line-height:1.6;">Ye sawaal MindSaathi ko help karte hain aapki situation samajhne mein, taaki main better support de sakoon. Sab information private hai.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        intake_questions = [
+            ("q1_anxiety", "1️⃣ Aakhle hafte anxiety ya tension kitna feel ki?",
+             ["😌 Bilkul nahi", "🙂 Thodi si", "😐 Moderate", "😟 Zyada", "😰 Bahut zyada"]),
+            ("q2_sleep", "2️⃣ Aapki neend kaisi rahi hai?",
+             ["😴 Bahut achhi", "🙂 Theek-theek", "😐 Thodi mushkil", "😟 Bahut mushkil"]),
+            ("q3_mood", "3️⃣ Kya aap depressed ya hopeless feel karte hain?",
+             ["✅ Kabhi nahi", "🔹 Kabhi kabhi", "🔶 Aksar", "🔴 Hamesha"]),
+            ("q4_academic", "4️⃣ Academic ya career pressure kitna feel hota hai?",
+             ["😌 Koi nahi", "🙂 Thoda", "😐 Moderate", "😟 Zyada", "😰 Bahut zyada"]),
+            ("q5_focus", "5️⃣ Concentration aur focus mein dikkat hoti hai?",
+             ["✅ Kabhi nahi", "🔹 Rarely", "🔶 Sometimes", "🔴 Often"]),
+            ("q6_social", "6️⃣ Socially isolated feel karte hain?",
+             ["😊 Nahi", "🙂 Thoda", "😐 Kaafi", "😟 Bahut zyada"]),
+            ("q7_physical", "7️⃣ Physical symptoms (headache, fatigue, stomach ache) aate hain?",
+             ["✅ Kabhi nahi", "🔹 Kabhi kabhi", "🔶 Aksar", "🔴 Hamesha"]),
+            ("q8_selfharm", "8️⃣ Kya aapko khud ko hurt karne ke khayal aate hain?",
+             ["✅ Kabhi nahi", "🔸 Kabhi kabhi (past mein)", "⚠️ Haan, aajkal aate hain"]),
+            ("q9_energy", "9️⃣ Aapki energy aur motivation kaisi hai?",
+             ["⚡ High", "🔋 Medium", "🪫 Low", "😴 Bahut low"]),
+            ("q10_duration", "🔟 Aap kitne time se aisa feel kar rahe hain?",
+             ["📅 1 week se kam", "📅 1-2 weeks", "📅 Ek mahina", "📅 1 mahine se zyada"]),
+        ]
+
+        with st.form("intake_quiz_form"):
+            answers = {}
+            for key, question, options in intake_questions:
+                st.markdown(f"**{question}**")
+                answers[key] = st.radio(
+                    question, options, index=0,
+                    key=f"intake_{key}", label_visibility="collapsed",
+                    horizontal=True
+                )
+                st.markdown("<div style='margin-bottom:0.4rem;'></div>", unsafe_allow_html=True)
+
+            st.markdown("<br>", unsafe_allow_html=True)
+            submit_intake = st.form_submit_button(
+                "✨ Submit & Shuru Karein Chat",
+                type="primary", use_container_width=True
+            )
+
+        if submit_intake:
+            st.session_state.intake_answers = answers
+            st.session_state.intake_done = True
+            # Build context from answers
+            crisis_flag = "haan, aajkal aate hain" in answers.get("q8_selfharm", "").lower()
+            intake_ctx = (
+                f"[INTAKE SURVEY] Anxiety: {answers.get('q1_anxiety','N/A')} | "
+                f"Sleep: {answers.get('q2_sleep','N/A')} | "
+                f"Mood: {answers.get('q3_mood','N/A')} | "
+                f"Academic Pressure: {answers.get('q4_academic','N/A')} | "
+                f"Focus: {answers.get('q5_focus','N/A')} | "
+                f"Social: {answers.get('q6_social','N/A')} | "
+                f"Physical: {answers.get('q7_physical','N/A')} | "
+                f"Energy: {answers.get('q9_energy','N/A')} | "
+                f"Duration: {answers.get('q10_duration','N/A')}"
+            )
+            if crisis_flag:
+                intake_ctx += " | ⚠️ Self-harm thoughts reported"
+
+            # Prepend as system context message
+            u_name = st.session_state.user['full_name'].split()[0] if st.session_state.user else "dost"
+            welcome_msg = (
+                f"Namaste {u_name}! 🙏 Aapne jo bataya, usse main samajh gaya.\n\n"
+                f"Aapki intake survey dekh ke main ensure karoonga ki mere sab jawaab aapki situation ke hisaab se hon.\n\n"
+                "Aap freely baat kar sakte hain — bina kisi judgment ke. **Aaj aap kaisa feel kar rahe hain?** 😊"
+            )
+            st.session_state.messages.append({
+                "role": "assistant",
+                "content": welcome_msg,
+                "emotion": "neutral",
+                "model_used": "MindSaathi",
+                "_intake_context": intake_ctx
+            })
+            if crisis_flag:
+                st.warning("⚠️ Aapne self-harm ke thoughts mention kiye hain. Please Vandrevala Foundation helpline call karein: **1860-2662-345** (24×7 free)")
+            st.rerun()
+
+        st.stop()
+
+    # ── Clean Professional Chat Header ──
+    st.markdown("""
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:#FFFFFF;border:1.5px solid rgba(196,181,253,0.5);border-radius:20px;margin-bottom:1rem;box-shadow:0 4px 20px rgba(139,92,246,0.07);">
         <div style="display:flex;align-items:center;gap:12px;">
-            <span style="width:10px;height:10px;border-radius:50%;background:#00F5D4;box-shadow:0 0 10px #00F5D4;"></span>
+            <div style="width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,#8B5CF6,#EC4899);display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 4px 14px rgba(139,92,246,0.3);">🧠</div>
             <div>
-                <div style="font-weight:800;color:#00F5D4;font-size:1.05rem;letter-spacing:0.01em;font-family:'Plus Jakarta Sans',sans-serif;">MindSaathi Telemetry Corridors</div>
-                <div style="font-size:0.72rem;color:#94A3B8;font-family:'JetBrains Mono',monospace;">Session #{sess_short} • Anonymized Student Token</div>
+                <div style="font-weight:800;font-size:1rem;color:#1E1B2E;font-family:'Plus Jakarta Sans',sans-serif;line-height:1.2;">MindSaathi Chat</div>
+                <div style="font-size:0.75rem;color:#8B5CF6;font-weight:600;">● Online — Aapke liye ready hoon 😊</div>
             </div>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            <span style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.35);color:#F59E0B;padding:4px 10px;border-radius:20px;font-size:0.73rem;font-weight:600;font-family:'JetBrains Mono',monospace;">
-                ● Affect: Anxious Overload (88%) via DistilRoBERTa
-            </span>
-            <span style="background:#111822;border:1px solid rgba(0,245,212,0.2);color:#94A3B8;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-family:'JetBrains Mono',monospace;">
-                Groq Whisper: <strong style="color:#00F5D4;"><240ms</strong> | Inference: <strong style="color:#4edea3;">1.8s</strong>
-            </span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span style="background:rgba(139,92,246,0.08);color:#8B5CF6;border:1px solid rgba(139,92,246,0.2);padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:700;">🔒 Private</span>
+            <span style="background:rgba(16,185,129,0.08);color:#10B981;border:1px solid rgba(16,185,129,0.2);padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:700;">✨ AI Powered</span>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # ── Live Neural Engine Status Chips ──
-    st.markdown("""
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;">
-        <span style="background:rgba(0,245,212,0.1);border:1px solid rgba(0,245,212,0.3);color:#00F5D4;padding:3px 10px;border-radius:12px;font-size:0.75rem;font-weight:600;font-family:'JetBrains Mono',monospace;">
-            🏥 Ling 3.0 Sante (Health MoE 124B)
-        </span>
-        <span style="background:rgba(155,89,245,0.12);border:1px solid rgba(155,89,245,0.3);color:#C4B5FD;padding:3px 10px;border-radius:12px;font-size:0.75rem;font-weight:600;font-family:'JetBrains Mono',monospace;">
-            🌐 Gemini 2.5 Flash (1M Context)
-        </span>
-        <span style="background:rgba(255,140,66,0.12);border:1px solid rgba(255,140,66,0.3);color:#FF8C42;padding:3px 10px;border-radius:12px;font-size:0.75rem;font-weight:600;font-family:'JetBrains Mono',monospace;">
-            ⚡ Groq LPU (Zero-Downtime Fallback)
-        </span>
-        <span style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);color:#10B981;padding:3px 10px;border-radius:12px;font-size:0.75rem;font-weight:600;font-family:'JetBrains Mono',monospace;">
-            🟢 LangSmith Traced
-        </span>
     </div>
     """, unsafe_allow_html=True)
 
     # ── Quick Action Bar ──
+
     c_btn1, c_btn2, c_btn3 = st.columns([1.3, 1.3, 1])
     with c_btn1:
         if st.button("🌿 Take PSS-4 Stress Test", use_container_width=True, type="primary" if st.session_state.show_chat_pss4 else "secondary"):
@@ -1683,14 +1728,6 @@ elif st.session_state.step == "chat":
     # ── Render all messages ──
     for idx, msg in enumerate(st.session_state.messages):
         with st.chat_message(msg["role"], avatar="🤖" if msg["role"] == "assistant" else "👤"):
-            if msg["role"] == "assistant":
-                mod_name = msg.get("model_used", "Ling 3.0 Flash Sante")
-                st.markdown(f"""
-                <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:700;color:#00F5D4;background:rgba(0,245,212,0.08);border:1px solid rgba(0,245,212,0.25);border-radius:4px;padding:2px 8px;display:inline-block;margin-bottom:6px;">
-                    [AGENT: CLINICAL_TRIAGE // {mod_name.upper()}]
-                </div>
-                """, unsafe_allow_html=True)
-
             st.markdown(msg["content"])
             
             # Render Visual Pathway SVG if attached
@@ -1706,41 +1743,38 @@ elif st.session_state.step == "chat":
 
             if msg["role"] == "assistant":
                 em = msg.get("emotion", "neutral")
-                mod = msg.get("model_used", "")
                 lat = msg.get("latency_ms", None)
 
-                badge_html = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;align-items:center;">'
+                badge_html = '<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;align-items:center;">'
                 if em and em != "neutral":
-                    badge_html += f'<span class="emotion-badge">🔵 {em.title()}</span>'
-                if mod:
-                    badge_html += f'<span style="background:rgba(0,245,212,0.12);color:#00F5D4;border:1px solid rgba(0,245,212,0.28);padding:2px 8px;border-radius:12px;font-size:0.72rem;font-weight:600;font-family:\'JetBrains Mono\',monospace;">⚡ {mod}</span>'
+                    badge_html += f'<span style="background:rgba(139,92,246,0.08);color:#8B5CF6;border:1px solid rgba(139,92,246,0.2);padding:2px 9px;border-radius:20px;font-size:0.69rem;font-weight:600;">🔵 {em.title()}</span>'
                 if lat:
-                    badge_html += f'<span style="background:rgba(255,255,255,0.06);color:#94A3B8;padding:2px 8px;border-radius:12px;font-size:0.72rem;font-family:\'JetBrains Mono\',monospace;">⏱️ {lat}ms</span>'
+                    badge_html += f'<span style="background:rgba(0,0,0,0.04);color:#94A3B8;padding:2px 8px;border-radius:20px;font-size:0.68rem;">⏱ {lat}ms</span>'
                 badge_html += '</div>'
                 st.markdown(badge_html, unsafe_allow_html=True)
 
                 render_audio_readout_button(msg["content"], f"chat_msg_{idx}")
 
-    # ── Stitch Action Suggestion Chips ──
-    st.markdown('<div style="font-size:0.72rem;font-weight:700;color:#94A3B8;letter-spacing:0.06em;text-transform:uppercase;margin:1rem 0 0.4rem 0;font-family:\'JetBrains Mono\',monospace;">⚡ Action Dispatcher</div>', unsafe_allow_html=True)
+    # ── Quick Action Chips ──
+    st.markdown('<div style="font-size:0.75rem;font-weight:700;color:#8B5CF6;letter-spacing:0.04em;margin:1rem 0 0.5rem 0;">✦ Quick Actions</div>', unsafe_allow_html=True)
     chip1, chip2, chip3, chip4 = st.columns(4)
     dispatch_msg = None
     with chip1:
-        if st.button("⚡ Exam Recovery Path", use_container_width=True, key="chip_exam"):
+        if st.button("📚 Exam Stress", use_container_width=True, key="chip_exam"):
             dispatch_msg = "MindSaathi, exam stress aur anxiety ke liye 5-step recovery pathway roadmap banao"
     with chip2:
-        if st.button("📊 Recalculate PSS-4", use_container_width=True, key="chip_pss4_calc"):
+        if st.button("🌿 PSS-4 Test", use_container_width=True, key="chip_pss4_calc"):
             st.session_state.show_chat_pss4 = True
             st.rerun()
     with chip3:
-        if st.button("🧘 5-4-3-2-1 Grounding", use_container_width=True, key="chip_ground"):
+        if st.button("🧘 Grounding", use_container_width=True, key="chip_ground"):
             dispatch_msg = "Mujhe sensory panic ho raha hai, 5-4-3-2-1 sensory grounding exercise step-by-step karao"
     with chip4:
-        if st.button("💼 Placement Prep", use_container_width=True, key="chip_placement"):
+        if st.button("💼 Career Help", use_container_width=True, key="chip_placement"):
             dispatch_msg = "Placement interviews aur mock coding tests ki imposter syndrome anxiety ke liye career roadmap do"
 
     # ── Chat Input Handler ──
-    user_input = st.chat_input("Speak or type your stress triggers in Hinglish or English...", key="main_chat_input")
+    user_input = st.chat_input("Apni baat likhein ya bolein — Hindi, Hinglish ya English mein... 💬", key="main_chat_input")
     if not user_input and dispatch_msg:
         user_input = dispatch_msg
 
@@ -1821,13 +1855,13 @@ elif st.session_state.step == "chat":
                     )
 
                 # Render badges
-                st.markdown(f"""
-                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;align-items:center;">
-                    <span class="emotion-badge">🔵 {detected_emotion.title()}</span>
-                    <span style="background:rgba(155,89,245,0.15);color:#C4B5FD;border:1px solid rgba(155,89,245,0.3);padding:2px 8px;border-radius:12px;font-size:0.72rem;font-weight:600;">⚡ {model_used}</span>
-                    <span style="background:rgba(255,255,255,0.06);color:#94A3B8;padding:2px 8px;border-radius:12px;font-size:0.72rem;">⏱️ {lat_ms}ms</span>
-                </div>
-                """, unsafe_allow_html=True)
+                badge_parts = []
+                if detected_emotion and detected_emotion != "neutral":
+                    badge_parts.append(f'<span style="background:rgba(139,92,246,0.08);color:#8B5CF6;border:1px solid rgba(139,92,246,0.2);padding:2px 9px;border-radius:20px;font-size:0.69rem;font-weight:600;">🔵 {detected_emotion.title()}</span>')
+                if lat_ms:
+                    badge_parts.append(f'<span style="background:rgba(0,0,0,0.04);color:#94A3B8;padding:2px 8px;border-radius:20px;font-size:0.68rem;">⏱ {lat_ms}ms</span>')
+                if badge_parts:
+                    st.markdown(f'<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;">{"".join(badge_parts)}</div>', unsafe_allow_html=True)
 
                 render_audio_readout_button(bot_reply, f"chat_msg_new_{len(st.session_state.messages)}")
 
@@ -1853,11 +1887,14 @@ elif st.session_state.step == "chat":
             if dispatch_msg or orch_result.get("is_pss4"):
                 st.rerun()
 
-    # ── DPDP Act 2023 Compliance Footer ──
+    # ── Footer ──
     st.markdown("""
-    <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.7rem;font-family:'JetBrains Mono',monospace;color:#94A3B8;padding:10px 4px 18px 4px;border-top:1px solid rgba(0,245,212,0.12);margin-top:12px;flex-wrap:wrap;gap:6px;">
-        <span>🔒 Zero-Knowledge DPDP Act 2023 Compliant • End-to-End Cryptographic Anonymization</span>
-        <span style="color:#10B981;">● Clinical CBT Guardrails: Active | Fail-Safe: 100%</span>
+    <div style="display:flex;justify-content:center;align-items:center;gap:16px;font-size:0.69rem;color:#CBD5E1;padding:10px 4px 16px 4px;border-top:1px solid rgba(196,181,253,0.2);margin-top:14px;flex-wrap:wrap;">
+        <span>🔒 Private & Secure</span>
+        <span style="color:#C4B5FD;">•</span>
+        <span>🧠 MindSaathi AI — Mental Health Companion</span>
+        <span style="color:#C4B5FD;">•</span>
+        <span style="color:#10B981;">● CBT Guardrails Active</span>
     </div>
     """, unsafe_allow_html=True)
 
