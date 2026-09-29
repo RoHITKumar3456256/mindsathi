@@ -544,269 +544,355 @@ dark_css = """
 
 iridescent_css = """
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
 
     :root {
-        --primary-violet: #8B5CF6;
-        --primary-dark: #7C3AED;
-        --secondary-rose: #EC4899;
-        --accent-cyan: #06B6D4;
-        --card-bg: #FFFFFF;
-        --card-border: rgba(226, 218, 248, 0.9);
-        --text-headline: #1E1B2E;
-        --text-sub: #6B7280;
-        --pill-shadow: 0 6px 20px rgba(124, 58, 237, 0.25);
+        --violet:       #7C3AED;
+        --violet-soft:  #8B5CF6;
+        --violet-glow:  rgba(124,58,237,0.18);
+        --rose:         #EC4899;
+        --surface:      #FAF8FF;
+        --card:         #FFFFFF;
+        --border:       rgba(216,204,252,0.75);
+        --border-focus: rgba(139,92,246,0.55);
+        --text-h:       #18143A;
+        --text-p:       #52496B;
+        --text-muted:   #9B92B8;
+        --shadow-card:  0 2px 12px rgba(124,58,237,0.06), 0 1px 3px rgba(0,0,0,0.04);
+        --shadow-float: 0 8px 32px rgba(124,58,237,0.14), 0 2px 8px rgba(0,0,0,0.06);
+        --radius-card:  20px;
+        --radius-pill:  9999px;
     }
 
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #FAF5FF; }
-    ::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.25); border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(139, 92, 246, 0.5); }
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.22); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.45); }
 
-    /* Hide Streamlit Header, Toolbar, Decoration */
-    header[data-testid="stHeader"] {
-        display: none !important;
-        height: 0px !important;
-        visibility: hidden !important;
-    }
-    .stAppDeployButton { display: none !important; visibility: hidden !important; }
-    div[data-testid="stToolbar"] { display: none !important; visibility: hidden !important; }
-    div[data-testid="stDecoration"] { display: none !important; height: 0px !important; }
-    #MainMenu { display: none !important; }
-    footer { display: none !important; }
+    /* ── HIDE STREAMLIT CHROME ── */
+    header[data-testid="stHeader"],
+    .stAppDeployButton,
+    div[data-testid="stToolbar"],
+    div[data-testid="stDecoration"],
+    #MainMenu, footer { display: none !important; }
 
-    /* Main Background - Iridescent Pastel Aurora */
+    /* ── ROOT BACKGROUND ── */
     .stApp {
-        background: radial-gradient(circle at 10% 12%, #F5ECFD 0%, #FAF5FF 35%, #EDE9FE 68%, #FCE8F3 100%) !important;
+        background:
+            radial-gradient(ellipse 80% 60% at 0% 0%, rgba(167,139,250,0.13) 0%, transparent 60%),
+            radial-gradient(ellipse 70% 50% at 100% 100%, rgba(236,72,153,0.09) 0%, transparent 60%),
+            linear-gradient(160deg, #F8F5FF 0%, #FAF9FF 40%, #F5F0FF 100%) !important;
         font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif !important;
-        color: #1E1B2E !important;
+        color: var(--text-h) !important;
+        min-height: 100vh;
     }
 
-    /* Sidebar - Glassmorphism Porcelain */
+    /* ── SIDEBAR ── */
     section[data-testid="stSidebar"] {
-        background: rgba(255, 255, 255, 0.82) !important;
-        backdrop-filter: blur(24px) !important;
-        -webkit-backdrop-filter: blur(24px) !important;
-        border-right: 1.5px solid rgba(226, 218, 248, 0.9) !important;
-        box-shadow: 4px 0 28px rgba(139, 92, 246, 0.05) !important;
+        background: rgba(255,255,255,0.88) !important;
+        backdrop-filter: blur(20px) saturate(1.4) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(1.4) !important;
+        border-right: 1px solid rgba(216,204,252,0.55) !important;
+        box-shadow: 2px 0 20px rgba(124,58,237,0.04) !important;
     }
-    section[data-testid="stSidebar"] > div { padding-top: 1.2rem; }
+    section[data-testid="stSidebar"] > div { padding-top: 1rem; }
 
-    /* Brand Header */
+    /* ── SIDEBAR BRAND ── */
     .sidebar-brand-name {
-        font-size: 1.35rem;
+        font-size: 1.3rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+        background: linear-gradient(130deg, #7C3AED 0%, #C026D3 60%, #EC4899 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        line-height: 1.1;
+        background-clip: text;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
     .sidebar-brand-tag {
-        font-size: 0.68rem;
-        color: #7C7892;
+        font-size: 0.65rem;
+        color: var(--text-muted);
         font-weight: 600;
-        letter-spacing: 0.03em;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
     }
 
-    /* Pill Buttons (Pinterest Style) */
+    /* ── ALL BUTTONS — Base ── */
     div.stButton > button {
-        background: #FFFFFF !important;
-        color: #374151 !important;
-        border: 1.5px solid rgba(226, 218, 248, 0.95) !important;
-        border-radius: 9999px !important;
-        font-weight: 700 !important;
-        font-size: 0.88rem !important;
-        padding: 0.5rem 1.25rem !important;
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        box-shadow: 0 4px 14px rgba(124, 58, 237, 0.05) !important;
+        background: var(--card) !important;
+        color: var(--text-p) !important;
+        border: 1.5px solid var(--border) !important;
+        border-radius: var(--radius-pill) !important;
+        font-weight: 600 !important;
+        font-size: 0.84rem !important;
+        padding: 0.45rem 1.1rem !important;
+        transition: all 0.22s cubic-bezier(0.4,0,0.2,1) !important;
+        box-shadow: var(--shadow-card) !important;
         font-family: 'Plus Jakarta Sans', sans-serif !important;
+        letter-spacing: 0.01em !important;
     }
     div.stButton > button:hover {
-        background: linear-gradient(135deg, #8B5CF6, #7C3AED) !important;
+        background: linear-gradient(135deg, var(--violet-soft), var(--violet)) !important;
         color: #FFFFFF !important;
         border-color: transparent !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.28) !important;
+        box-shadow: var(--shadow-float) !important;
+        transform: translateY(-1px) !important;
     }
     div.stButton > button[kind="primary"] {
         background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%) !important;
         color: #FFFFFF !important;
         border: none !important;
-        border-radius: 9999px !important;
-        box-shadow: 0 6px 20px rgba(124, 58, 237, 0.3) !important;
+        box-shadow: 0 6px 18px rgba(124,58,237,0.32) !important;
     }
     div.stButton > button[kind="primary"]:hover {
         background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%) !important;
-        box-shadow: 0 10px 28px rgba(124, 58, 237, 0.45) !important;
-        transform: translateY(-2px) !important;
+        box-shadow: 0 10px 28px rgba(124,58,237,0.42) !important;
+        transform: translateY(-1px) !important;
     }
-    div.stButton > button:active { transform: translateY(1px) !important; }
+    div.stButton > button:active { transform: translateY(0px) !important; box-shadow: none !important; }
 
-    /* Hero Greeting Wrap */
+    /* ── HERO HEADER CARD ── */
     .hero-header {
-        background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #A855F7 100%) !important;
-        border-radius: 28px !important;
-        padding: 1.8rem 2.2rem !important;
-        margin-bottom: 1.4rem !important;
-        box-shadow: 0 16px 40px -8px rgba(124, 58, 237, 0.35) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        background: linear-gradient(135deg, #7C3AED 0%, #9333EA 50%, #A855F7 100%) !important;
+        border-radius: 22px !important;
+        padding: 1.6rem 2rem !important;
+        margin-bottom: 1.2rem !important;
+        box-shadow: 0 12px 32px -6px rgba(124,58,237,0.3) !important;
+        border: 1px solid rgba(255,255,255,0.15) !important;
+        position: relative;
+        overflow: hidden;
+    }
+    .hero-header::before {
+        content: '';
+        position: absolute; top: -50%; right: -10%; width: 280px; height: 280px;
+        background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 65%);
+        border-radius: 50%;
     }
     .hero-title {
-        font-size: 2.1rem !important;
+        font-size: 1.85rem !important;
         font-weight: 800 !important;
         color: #FFFFFF !important;
-        margin: 0 0 6px 0 !important;
-        letter-spacing: -0.02em !important;
+        margin: 0 0 4px 0 !important;
+        letter-spacing: -0.025em !important;
         font-family: 'Plus Jakarta Sans', sans-serif !important;
+        line-height: 1.2 !important;
     }
     .hero-sub {
-        color: rgba(255, 255, 255, 0.9) !important;
-        font-size: 0.95rem !important;
+        color: rgba(255,255,255,0.82) !important;
+        font-size: 0.9rem !important;
         margin: 0 !important;
-        font-weight: 500 !important;
+        font-weight: 400 !important;
+        line-height: 1.5 !important;
     }
 
-    /* Pinterest Rounded Porcelain Cards */
+    /* ── PORCELAIN ACTION CARDS ── */
     .action-card {
-        background: #FFFFFF !important;
-        border: 1.5px solid rgba(226, 218, 248, 0.9) !important;
-        border-radius: 26px !important;
-        padding: 1.8rem 1.6rem !important;
-        box-shadow: 0 12px 36px -6px rgba(139, 92, 246, 0.08), 0 4px 14px -2px rgba(139, 92, 246, 0.04) !important;
-        transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        background: var(--card) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: var(--radius-card) !important;
+        padding: 1.4rem 1.4rem !important;
+        box-shadow: var(--shadow-card) !important;
+        transition: all 0.24s cubic-bezier(0.4,0,0.2,1) !important;
         height: 100% !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
-        margin-bottom: 0.5rem !important;
     }
     .action-card:hover {
-        transform: translateY(-4px) !important;
-        border-color: #8B5CF6 !important;
-        box-shadow: 0 18px 44px -6px rgba(139, 92, 246, 0.16) !important;
+        transform: translateY(-3px) !important;
+        border-color: rgba(139,92,246,0.45) !important;
+        box-shadow: 0 12px 32px -4px rgba(124,58,237,0.12) !important;
     }
-    .card-icon { font-size: 2rem !important; margin-bottom: 0.6rem !important; display: block !important; }
+    .card-icon { font-size: 1.7rem !important; margin-bottom: 0.55rem !important; display: block !important; }
     .card-title {
-        color: #1E1B2E !important;
-        font-size: 1.12rem !important;
+        color: var(--text-h) !important;
+        font-size: 1rem !important;
         font-weight: 700 !important;
-        margin-bottom: 0.4rem !important;
+        margin-bottom: 0.3rem !important;
+        letter-spacing: -0.01em !important;
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
     .card-desc {
-        color: #6B7280 !important;
-        font-size: 0.88rem !important;
-        line-height: 1.5 !important;
-        margin-bottom: 0.8rem !important;
+        color: var(--text-p) !important;
+        font-size: 0.82rem !important;
+        line-height: 1.55 !important;
+        margin-bottom: 0.7rem !important;
     }
 
-    /* Topic Pills */
+    /* ── TOPIC PILLS ── */
     .topic-pill {
-        background: #FFFFFF !important;
-        border: 1.5px solid rgba(226, 218, 248, 0.9) !important;
-        border-radius: 9999px !important;
-        padding: 0.75rem 1.1rem !important;
+        background: var(--card) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: var(--radius-pill) !important;
+        padding: 0.6rem 1rem !important;
         text-align: center !important;
-        font-size: 0.84rem !important;
-        font-weight: 700 !important;
-        color: #4B5563 !important;
-        box-shadow: 0 4px 14px rgba(139, 92, 246, 0.05) !important;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        color: var(--text-p) !important;
+        box-shadow: var(--shadow-card) !important;
+        transition: all 0.2s ease !important;
         cursor: pointer !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 6px !important;
+        gap: 5px !important;
     }
     .topic-pill:hover {
-        background: linear-gradient(135deg, #8B5CF6, #7C3AED) !important;
+        background: linear-gradient(135deg, var(--violet-soft), var(--violet)) !important;
         color: #FFFFFF !important;
         border-color: transparent !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3) !important;
+        box-shadow: var(--shadow-float) !important;
     }
 
-    /* Pinterest Smart Chat Bubble Styling */
+    /* ── CHAT BUBBLES ── */
     div[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
-        background: #FFFFFF !important;
-        border: 1.5px solid rgba(226, 218, 248, 0.85) !important;
-        border-radius: 24px 24px 24px 6px !important;
-        padding: 1.2rem 1.6rem !important;
-        box-shadow: 0 10px 30px -4px rgba(139, 92, 246, 0.08) !important;
-        margin-bottom: 1rem !important;
-        color: #1E1B2E !important;
+        background: var(--card) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 18px 18px 18px 4px !important;
+        padding: 1rem 1.4rem !important;
+        box-shadow: var(--shadow-card) !important;
+        margin-bottom: 0.75rem !important;
+        color: var(--text-h) !important;
     }
     div[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
-        background: linear-gradient(135deg, #F3E8FF 0%, #EDE9FE 100%) !important;
-        border: 1.5px solid rgba(196, 181, 253, 0.7) !important;
-        border-radius: 24px 24px 6px 24px !important;
-        padding: 1.1rem 1.5rem !important;
-        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.05) !important;
-        margin-bottom: 1rem !important;
-        color: #1E1B2E !important;
+        background: linear-gradient(135deg, #EDE9FE 0%, #F3E8FF 100%) !important;
+        border: 1px solid rgba(196,181,253,0.6) !important;
+        border-radius: 18px 18px 4px 18px !important;
+        padding: 0.9rem 1.4rem !important;
+        box-shadow: 0 2px 10px rgba(139,92,246,0.06) !important;
+        margin-bottom: 0.75rem !important;
+        color: var(--text-h) !important;
     }
 
-    /* Floating Pill Chat Input */
+    /* ── CHAT INPUT ── */
     div[data-testid="stChatInput"] {
-        background: #FFFFFF !important;
-        border: 1.5px solid rgba(196, 181, 253, 0.8) !important;
-        border-radius: 9999px !important;
-        box-shadow: 0 12px 36px rgba(139, 92, 246, 0.12) !important;
-        padding: 6px 16px !important;
+        background: var(--card) !important;
+        border: 1.5px solid rgba(196,181,253,0.7) !important;
+        border-radius: var(--radius-pill) !important;
+        box-shadow: 0 8px 28px rgba(124,58,237,0.1) !important;
+        padding: 4px 14px !important;
     }
     div[data-testid="stChatInput"] textarea {
-        color: #1E1B2E !important;
+        color: var(--text-h) !important;
         font-family: 'Plus Jakarta Sans', sans-serif !important;
-        font-size: 0.95rem !important;
+        font-size: 0.92rem !important;
+        font-weight: 400 !important;
     }
     div[data-testid="stChatInput"] button {
-        background: linear-gradient(135deg, #8B5CF6, #7C3AED) !important;
+        background: linear-gradient(135deg, var(--violet-soft), var(--violet)) !important;
         color: white !important;
         border-radius: 50% !important;
     }
-
-    /* Metric Containers */
-    div[data-testid="metric-container"] {
-        background: #FFFFFF !important;
-        border: 1.5px solid rgba(226, 218, 248, 0.9) !important;
-        border-radius: 20px !important;
-        padding: 1.2rem !important;
-        box-shadow: 0 8px 24px rgba(139, 92, 246, 0.06) !important;
+    div[data-testid="stChatInput"]:focus-within {
+        border-color: var(--border-focus) !important;
+        box-shadow: 0 8px 28px rgba(124,58,237,0.16), 0 0 0 3px rgba(139,92,246,0.08) !important;
     }
 
+    /* ── METRIC CONTAINERS ── */
+    div[data-testid="metric-container"] {
+        background: var(--card) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 16px !important;
+        padding: 1rem 1.2rem !important;
+        box-shadow: var(--shadow-card) !important;
+    }
+
+    /* ── FORM INPUTS ── */
+    div[data-testid="stTextInput"] input,
+    div[data-testid="stSelectbox"] > div > div,
+    div[data-testid="stTextArea"] textarea {
+        background: var(--card) !important;
+        border: 1.5px solid var(--border) !important;
+        border-radius: 14px !important;
+        color: var(--text-h) !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+    }
+    div[data-testid="stTextInput"] input:focus,
+    div[data-testid="stTextArea"] textarea:focus {
+        border-color: var(--border-focus) !important;
+        box-shadow: 0 0 0 3px rgba(139,92,246,0.1) !important;
+    }
+
+    /* ── RADIO BUTTONS (Intake Quiz Style) ── */
+    div[data-testid="stRadio"] label {
+        font-size: 0.84rem !important;
+        font-weight: 500 !important;
+        color: var(--text-p) !important;
+    }
+
+    /* ── EXPANDER ── */
+    div[data-testid="stExpander"] {
+        background: var(--card) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 16px !important;
+        box-shadow: var(--shadow-card) !important;
+    }
+
+    /* ── DIVIDER ── */
+    hr { border: none !important; border-top: 1px solid rgba(216,204,252,0.45) !important; margin: 1rem 0 !important; }
+
+    /* ── EMOTION BADGE ── */
     .emotion-badge {
-        background: rgba(139, 92, 246, 0.1);
+        background: rgba(139,92,246,0.08);
         color: #7C3AED;
-        border: 1px solid rgba(139, 92, 246, 0.3);
-        padding: 3px 12px;
+        border: 1px solid rgba(139,92,246,0.22);
+        padding: 2px 10px;
         border-radius: 9999px;
-        font-size: 0.75rem;
-        font-weight: 700;
+        font-size: 0.7rem;
+        font-weight: 600;
         display: inline-flex;
         align-items: center;
-        gap: 5px;
+        gap: 4px;
     }
+
+    /* ── USER PILL (SIDEBAR) ── */
     .user-pill {
         display: flex;
         align-items: center;
-        gap: 10px;
-        background: #FFFFFF;
-        border: 1.5px solid rgba(226, 218, 248, 0.95);
-        border-radius: 9999px;
-        padding: 0.5rem 1rem;
-        margin-bottom: 0.8rem;
-        box-shadow: 0 4px 14px rgba(139, 92, 246, 0.06);
+        gap: 9px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-pill);
+        padding: 0.45rem 0.9rem;
+        margin-bottom: 0.6rem;
+        box-shadow: var(--shadow-card);
     }
     .user-avatar {
-        width: 34px; height: 34px;
+        width: 32px; height: 32px;
         background: linear-gradient(135deg, #8B5CF6, #EC4899);
         border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
-        font-size: 0.9rem; font-weight: 700; color: white;
+        font-size: 0.85rem; font-weight: 700; color: white;
+        flex-shrink: 0;
     }
-    .user-name { font-size: 0.9rem; font-weight: 700; color: #1E1B2E; }
-    .user-tag { font-size: 0.72rem; color: #6B7280; font-weight: 500; }
+    .user-name { font-size: 0.87rem; font-weight: 700; color: var(--text-h); }
+    .user-tag  { font-size: 0.68rem; color: var(--text-muted); font-weight: 500; }
+
+    /* ── CRISIS BANNER ── */
+    .crisis-banner {
+        background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(248,113,113,0.06));
+        border: 2px solid rgba(239,68,68,0.4);
+        border-radius: 18px;
+        padding: 1.2rem 1.4rem;
+        color: #B91C1C;
+        font-size: 0.95rem;
+        line-height: 1.65;
+    }
+
+    /* ── HEADINGS IN MAIN AREA ── */
+    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.02em !important;
+        color: var(--text-h) !important;
+    }
+
+    /* ── SUCCESS / INFO / WARNING ALERTS ── */
+    div[data-testid="stAlert"] {
+        border-radius: 14px !important;
+        border: 1px solid var(--border) !important;
+    }
 </style>
 """
 
